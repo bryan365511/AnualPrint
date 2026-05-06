@@ -264,7 +264,7 @@ tbody td{color:var(--text);}
         </div>
         <div class="auth-linkrow">
           <button class="auth-link" id="loginToRegisterBtn">Crear cuenta</button>
-          <button class="auth-link" id="loginToMagicBtn">Olvid&eacute; mi contrase&ntilde;a</button>
+          <button class="auth-link" id="loginToRecoverBtn">Olvid&eacute; mi contrase&ntilde;a</button>
           <button class="auth-link" data-auth-back>Volver</button>
         </div>
       </div>
@@ -298,7 +298,7 @@ tbody td{color:var(--text);}
 
       <div class="auth-viewpane" id="auth-magic">
         <div class="auth-title">Acceso por correo</div>
-        <p class="auth-copy">Recibe un enlace de acceso en tu correo. Tambi&eacute;n sirve para recuperar acceso si olvidaste tu contrase&ntilde;a.</p>
+        <p class="auth-copy">Recibe un enlace de acceso en tu correo para ingresar sin contrase&ntilde;a.</p>
         <div class="auth-form">
           <div class="auth-field">
             <label for="magicEmail">Correo electr&oacute;nico</label>
@@ -311,6 +311,45 @@ tbody td{color:var(--text);}
         <div class="auth-linkrow">
           <button class="auth-link" id="magicToLoginBtn">Iniciar sesi&oacute;n con contrase&ntilde;a</button>
           <button class="auth-link" data-auth-back>Volver</button>
+        </div>
+      </div>
+
+      <div class="auth-viewpane" id="auth-reset">
+        <div class="auth-title">Recuperar contrase&ntilde;a</div>
+        <p class="auth-copy">Te enviaremos un enlace seguro para crear una nueva contrase&ntilde;a.</p>
+        <div class="auth-form">
+          <div class="auth-field">
+            <label for="resetEmail">Correo electr&oacute;nico</label>
+            <input id="resetEmail" type="email" autocomplete="email" placeholder="nombre@empresa.com">
+          </div>
+          <div class="auth-actions stack">
+            <button class="auth-btn auth-primary" id="resetPasswordBtn">Enviar enlace de recuperaci&oacute;n</button>
+          </div>
+        </div>
+        <div class="auth-linkrow">
+          <button class="auth-link" id="resetToLoginBtn">Volver a iniciar sesi&oacute;n</button>
+          <button class="auth-link" data-auth-back>Volver</button>
+        </div>
+      </div>
+
+      <div class="auth-viewpane" id="auth-new-password">
+        <div class="auth-title">Crear nueva contrase&ntilde;a</div>
+        <p class="auth-copy">Ingresa una nueva contrase&ntilde;a para tu cuenta.</p>
+        <div class="auth-form">
+          <div class="auth-field">
+            <label for="newPassword">Nueva contrase&ntilde;a</label>
+            <input id="newPassword" type="password" autocomplete="new-password" placeholder="M&iacute;nimo 6 caracteres">
+          </div>
+          <div class="auth-field">
+            <label for="newPasswordConfirm">Confirmar nueva contrase&ntilde;a</label>
+            <input id="newPasswordConfirm" type="password" autocomplete="new-password" placeholder="Repite tu contrase&ntilde;a">
+          </div>
+          <div class="auth-actions stack">
+            <button class="auth-btn auth-primary" id="updatePasswordBtn">Actualizar contrase&ntilde;a</button>
+          </div>
+        </div>
+        <div class="auth-linkrow">
+          <button class="auth-link" data-auth-back>Volver al inicio</button>
         </div>
       </div>
 
@@ -473,6 +512,8 @@ var currentReportId = null;
 var currentReportTitle = '';
 var dashboardInitialized = false;
 var authBusy = false;
+var emailCooldowns = {};
+var emailCooldownTimers = {};
 
 function getYD(year){
   if(!allData[year]){
@@ -740,6 +781,8 @@ function isLikelyMissingAccount(error){
 function normalizeAuthError(error,mode){
   var msg=(error&&error.message)||'Error de Supabase. Intenta nuevamente.';
   var low=msg.toLowerCase();
+  if(low.indexOf('email rate limit exceeded')!==-1||low.indexOf('rate limit')!==-1)return 'Se alcanz\u00f3 el l\u00edmite temporal de correos. Espera unos minutos antes de volver a solicitar otro enlace.';
+  if(low.indexOf('expired')!==-1||low.indexOf('invalid')!==-1&&low.indexOf('link')!==-1)return 'El enlace es inv\u00e1lido o expir\u00f3. Solicita uno nuevo.';
   if(low.indexOf('email not confirmed')!==-1)return 'Tu cuenta existe, pero debes confirmar tu correo antes de iniciar sesi\u00f3n.';
   if(mode==='signin'&&isLikelyMissingAccount(error))return 'No encontramos una cuenta con este correo. Primero reg\u00edstrate.';
   if(low.indexOf('invalid login credentials')!==-1||low.indexOf('invalid credentials')!==-1)return 'Correo o contrase\u00f1a incorrectos.';
@@ -758,7 +801,7 @@ function setAuthLoading(mode,isLoading){
   authBusy=isLoading;
   var signInBtn=document.getElementById('signInBtn');
   var signUpBtn=document.getElementById('signUpBtn');
-  ['signInBtn','signUpBtn','welcomeGoogleBtn','loginGoogleBtn','registerGoogleBtn','magicLinkBtn'].forEach(function(id){
+  ['signInBtn','signUpBtn','welcomeGoogleBtn','loginGoogleBtn','registerGoogleBtn','magicLinkBtn','resetPasswordBtn','updatePasswordBtn'].forEach(function(id){
     var btn=document.getElementById(id);
     if(btn)btn.disabled=isLoading;
   });
@@ -766,6 +809,57 @@ function setAuthLoading(mode,isLoading){
   if(signUpBtn)signUpBtn.textContent=isLoading&&mode==='signup'?'Registrando...':'Crear cuenta';
   var magicBtn=document.getElementById('magicLinkBtn');
   if(magicBtn)magicBtn.textContent=isLoading&&mode==='magic'?'Enviando enlace...':'Recibir enlace de acceso';
+  var resetBtn=document.getElementById('resetPasswordBtn');
+  if(resetBtn)resetBtn.textContent=isLoading&&mode==='reset'?'Enviando enlace...':'Enviar enlace de recuperaci\u00f3n';
+  var updateBtn=document.getElementById('updatePasswordBtn');
+  if(updateBtn)updateBtn.textContent=isLoading&&mode==='new-password'?'Actualizando...':'Actualizar contrase\u00f1a';
+  updateEmailCooldownButtons();
+}
+function getEmailCooldownLabel(type,remaining){
+  var action=type==='magic'?'otro enlace de acceso':'otro enlace de recuperaci\u00f3n';
+  return 'Puedes solicitar '+action+' en '+remaining+' segundos.';
+}
+function isEmailCooldownActive(type){
+  return emailCooldowns[type]&&Date.now()<emailCooldowns[type];
+}
+function getEmailCooldownRemaining(type){
+  if(!emailCooldowns[type])return 0;
+  return Math.max(0,Math.ceil((emailCooldowns[type]-Date.now())/1000));
+}
+function updateEmailCooldownButtons(){
+  var items=[
+    {type:'magic',id:'magicLinkBtn',label:'Recibir enlace de acceso'},
+    {type:'reset',id:'resetPasswordBtn',label:'Enviar enlace de recuperaci\u00f3n'}
+  ];
+  items.forEach(function(item){
+    var btn=document.getElementById(item.id);
+    if(!btn)return;
+    var remaining=getEmailCooldownRemaining(item.type);
+    if(remaining>0){
+      btn.disabled=true;
+      btn.textContent=getEmailCooldownLabel(item.type,remaining);
+    }else if(!authBusy){
+      btn.disabled=false;
+      btn.textContent=item.label;
+    }
+  });
+}
+function startEmailCooldown(type){
+  emailCooldowns[type]=Date.now()+60000;
+  updateEmailCooldownButtons();
+  if(emailCooldownTimers[type])clearInterval(emailCooldownTimers[type]);
+  emailCooldownTimers[type]=setInterval(function(){
+    if(!isEmailCooldownActive(type)){
+      clearInterval(emailCooldownTimers[type]);
+      emailCooldownTimers[type]=null;
+      emailCooldowns[type]=0;
+    }
+    updateEmailCooldownButtons();
+  },1000);
+}
+function showEmailCooldownMessage(type){
+  var remaining=getEmailCooldownRemaining(type);
+  if(remaining>0)setAuthMessage(getEmailCooldownLabel(type,remaining),'ok');
 }
 function updateAuthConfigNote(){
   var note=document.getElementById('authConfigNote');
@@ -840,8 +934,9 @@ function bindAppEvents(){
   on('goMagicBtn','click',function(){showAuthView('magic');});
   on('loginToRegisterBtn','click',function(){showAuthView('register');});
   on('registerToLoginBtn','click',function(){showAuthView('login');});
-  on('loginToMagicBtn','click',function(){showAuthView('magic');});
+  on('loginToRecoverBtn','click',function(){prefillResetEmail();showAuthView('reset');});
   on('magicToLoginBtn','click',function(){showAuthView('login');});
+  on('resetToLoginBtn','click',function(){showAuthView('login');});
   document.querySelectorAll('[data-auth-back]').forEach(function(btn){btn.addEventListener('click',function(){showAuthView('welcome');});});
   document.getElementById('signInBtn').addEventListener('click',function(e){e.preventDefault();signIn();});
   document.getElementById('signUpBtn').addEventListener('click',function(e){e.preventDefault();signUp();});
@@ -849,6 +944,8 @@ function bindAppEvents(){
   on('loginGoogleBtn','click',function(){signInWithGoogle();});
   on('registerGoogleBtn','click',function(){signInWithGoogle();});
   on('magicLinkBtn','click',function(e){e.preventDefault();sendMagicLink();});
+  on('resetPasswordBtn','click',function(e){e.preventDefault();sendPasswordReset();});
+  on('updatePasswordBtn','click',function(e){e.preventDefault();updateRecoveredPassword();});
   document.getElementById('signOutBtn').addEventListener('click',signOut);
   document.getElementById('saveReportBtn').addEventListener('click',function(){saveReport(false);});
   document.getElementById('saveAsReportBtn').addEventListener('click',function(){saveReport(true);});
@@ -871,12 +968,21 @@ function bindAppEvents(){
     document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')signUp();});
   });
   document.getElementById('magicEmail').addEventListener('keydown',function(e){if(e.key==='Enter')sendMagicLink();});
+  document.getElementById('resetEmail').addEventListener('keydown',function(e){if(e.key==='Enter')sendPasswordReset();});
+  ['newPassword','newPasswordConfirm'].forEach(function(id){
+    document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')updateRecoveredPassword();});
+  });
 }
 async function initApp(){
   initTheme();
   bindAppEvents();
   updateAuthConfigNote();
   showAuthView('loading','Verificando tu sesi\u00f3n...');
+  var authUrlError=getAuthUrlErrorMessage();
+  if(authUrlError){
+    showAuthView('reset');
+    setAuthMessage(authUrlError,'error');
+  }
   if(!isSupabaseConfigured()){
     showAuthView('welcome');
     setAuthMessage('Supabase no configurado. Revisa SUPABASE_URL y SUPABASE_ANON_KEY.',true);
@@ -890,13 +996,26 @@ async function initApp(){
   try{
     supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
     supabaseClient.auth.onAuthStateChange(function(event,session){
+      if(event==='PASSWORD_RECOVERY'){
+        currentUser=session&&session.user?session.user:null;
+        showAuthView('new-password');
+        setAuthMessage('Crea una nueva contrase\u00f1a para recuperar tu acceso.','ok');
+        return;
+      }
       if(event==='SIGNED_IN')setAuthMessage('Inicio de sesi\u00f3n exitoso. Cargando dashboard...','ok');
       if(event==='SIGNED_OUT')setAuthMessage('Sesi\u00f3n cerrada.','ok');
       handleSession(session);
     });
+    if(authUrlError)return;
     setAuthMessage('Verificando sesi\u00f3n...');
     var res=await supabaseClient.auth.getSession();
     if(res.error){setAuthMessage(normalizeAuthError(res.error),'error');showAuthView('welcome');return;}
+    if(isRecoveryUrl()&&res.data&&res.data.session){
+      currentUser=res.data.session.user||null;
+      showAuthView('new-password');
+      setAuthMessage('Crea una nueva contrase\u00f1a para recuperar tu acceso.','ok');
+      return;
+    }
     handleSession(res.data?res.data.session:null);
     if(!(res.data&&res.data.session))setAuthMessage('Elige una opci\u00f3n para acceder o crear tu cuenta.');
   }catch(err){
@@ -934,6 +1053,15 @@ function getAuthCredentials(mode){
   if(mode==='magic'){
     return {email:document.getElementById('magicEmail').value.trim()};
   }
+  if(mode==='reset'){
+    return {email:document.getElementById('resetEmail').value.trim()};
+  }
+  if(mode==='new-password'){
+    return {
+      password:document.getElementById('newPassword').value,
+      confirm:document.getElementById('newPasswordConfirm').value
+    };
+  }
   return {
     email:document.getElementById('loginEmail').value.trim(),
     password:document.getElementById('loginPassword').value
@@ -941,6 +1069,44 @@ function getAuthCredentials(mode){
 }
 function getRedirectUrl(){
   return window.location.origin+window.location.pathname;
+}
+function isFileProtocol(){
+  return window.location&&window.location.protocol==='file:';
+}
+function getAuthUrlParams(){
+  var params=new URLSearchParams();
+  var parts=[window.location.search||'',window.location.hash||''];
+  parts.forEach(function(part){
+    if(!part)return;
+    part=part.replace(/^[?#]/,'');
+    if(!part)return;
+    var current=new URLSearchParams(part);
+    current.forEach(function(value,key){params.set(key,value);});
+  });
+  return params;
+}
+function isRecoveryUrl(){
+  var params=getAuthUrlParams();
+  return params.get('type')==='recovery';
+}
+function getAuthUrlErrorMessage(){
+  var params=getAuthUrlParams();
+  var error=params.get('error');
+  var code=params.get('error_code');
+  var desc=params.get('error_description')||'';
+  if(error==='access_denied'||code==='otp_expired'||desc.toLowerCase().indexOf('invalid or has expired')!==-1){
+    return 'El enlace es inv\u00e1lido o expir\u00f3. Solicita uno nuevo.';
+  }
+  return '';
+}
+function clearAuthUrl(){
+  if(window.history&&window.history.replaceState&&!isFileProtocol()){
+    window.history.replaceState({},document.title,getRedirectUrl());
+  }
+}
+function prefillResetEmail(){
+  var email=document.getElementById('loginEmail').value.trim()||document.getElementById('magicEmail').value.trim();
+  if(email)document.getElementById('resetEmail').value=email;
 }
 async function signUp(){
   if(authBusy)return;
@@ -953,7 +1119,7 @@ async function signUp(){
   setAuthMessage('Registrando...');
   showLoading('Creando cuenta...');
   try{
-    var res=await supabaseClient.auth.signUp({email:cred.email,password:cred.password});
+    var res=await supabaseClient.auth.signUp({email:cred.email,password:cred.password,options:{emailRedirectTo:getRedirectUrl()}});
     if(res.error){setAuthMessage(normalizeAuthError(res.error,'signup'),'error');return;}
     if(res.data&&res.data.session){
       setAuthMessage('Registro exitoso. Cargando dashboard...','ok');
@@ -1023,6 +1189,7 @@ async function signInWithGoogle(){
 }
 async function sendMagicLink(){
   if(authBusy)return;
+  if(isEmailCooldownActive('magic')){showEmailCooldownMessage('magic');return;}
   if(!supabaseClient){setAuthMessage('Supabase no configurado. Revisa SUPABASE_URL y SUPABASE_ANON_KEY.','error');return;}
   var cred=getAuthCredentials('magic');
   if(!cred.email){setAuthMessage('Ingresa tu correo para recibir el enlace de acceso.','error');return;}
@@ -1034,11 +1201,73 @@ async function sendMagicLink(){
       email:cred.email,
       options:{emailRedirectTo:getRedirectUrl()}
     });
-    if(res.error){setAuthMessage(normalizeAuthError(res.error,'magic'),'error');return;}
+    if(res.error){setAuthMessage(normalizeAuthError(res.error,'magic'),'error');startEmailCooldown('magic');return;}
+    startEmailCooldown('magic');
     setAuthMessage('Te enviamos un enlace de acceso. Revisa tu correo.','ok');
     showToast('Te enviamos un enlace de acceso.','ok');
   }catch(err){
     setAuthMessage('Error de Supabase: '+(err.message||'No se pudo enviar el enlace.'),'error');
+  }finally{
+    hideLoading();
+    setAuthLoading('',false);
+  }
+}
+async function sendPasswordReset(){
+  if(authBusy)return;
+  if(isEmailCooldownActive('reset')){showEmailCooldownMessage('reset');return;}
+  if(!supabaseClient){setAuthMessage('Supabase no configurado. Revisa SUPABASE_URL y SUPABASE_ANON_KEY.','error');return;}
+  if(isFileProtocol()){
+    setAuthMessage('Para usar recuperaci\u00f3n de contrase\u00f1a debes abrir la app desde Live Server o desde la URL publicada.','error');
+    return;
+  }
+  var cred=getAuthCredentials('reset');
+  if(!cred.email){setAuthMessage('Ingresa tu correo para recuperar la contrase\u00f1a.','error');return;}
+  setAuthLoading('reset',true);
+  setAuthMessage('Enviando enlace de recuperaci\u00f3n...');
+  showLoading('Enviando enlace de recuperaci\u00f3n...');
+  try{
+    var res=await supabaseClient.auth.resetPasswordForEmail(cred.email,{
+      redirectTo:getRedirectUrl()
+    });
+    if(res.error){setAuthMessage(normalizeAuthError(res.error,'reset'),'error');startEmailCooldown('reset');return;}
+    startEmailCooldown('reset');
+    setAuthMessage('Te enviamos un enlace para crear una nueva contrase\u00f1a. Revisa tu correo.','ok');
+    showToast('Enlace de recuperaci\u00f3n enviado.','ok');
+  }catch(err){
+    setAuthMessage('Error de Supabase: '+(err.message||'No se pudo enviar el enlace de recuperaci\u00f3n.'),'error');
+  }finally{
+    hideLoading();
+    setAuthLoading('',false);
+  }
+}
+async function updateRecoveredPassword(){
+  if(authBusy)return;
+  if(!supabaseClient){setAuthMessage('Supabase no configurado. Revisa SUPABASE_URL y SUPABASE_ANON_KEY.','error');return;}
+  var cred=getAuthCredentials('new-password');
+  if(!cred.password){setAuthMessage('Ingresa una nueva contrase\u00f1a.','error');return;}
+  if(cred.password.length<6){setAuthMessage('La contrase\u00f1a debe tener m\u00ednimo 6 caracteres.','error');return;}
+  if(cred.password!==cred.confirm){setAuthMessage('Las contrase\u00f1as no coinciden.','error');return;}
+  setAuthLoading('new-password',true);
+  setAuthMessage('Actualizando contrase\u00f1a...');
+  showLoading('Actualizando contrase\u00f1a...');
+  try{
+    var res=await supabaseClient.auth.updateUser({password:cred.password});
+    if(res.error){setAuthMessage(normalizeAuthError(res.error,'new-password'),'error');return;}
+    currentUser=res.data&&res.data.user?res.data.user:currentUser;
+    clearAuthUrl();
+    setAuthMessage('Contrase\u00f1a actualizada correctamente. Ya puedes usar tu cuenta.','ok');
+    showToast('Contrase\u00f1a actualizada correctamente.','ok');
+    showDashboard();
+    document.getElementById('userEmail').textContent=currentUser&&currentUser.email?currentUser.email:'Usuario activo';
+    setReportMessage();
+    if(!dashboardInitialized){
+      populateYearSelect();
+      buildCharts();
+      dashboardInitialized=true;
+    }
+    loadReports();
+  }catch(err){
+    setAuthMessage('Error de Supabase: '+(err.message||'No se pudo actualizar la contrase\u00f1a.'),'error');
   }finally{
     hideLoading();
     setAuthLoading('',false);
