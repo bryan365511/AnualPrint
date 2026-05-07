@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="description" content="AnualPrint: dashboard financiero anual de compras, ventas, utilidad bruta y margen para seguimiento gerencial.">
+<meta name="description" content="AnualPrint: dashboard financiero anual de ventas, compras, gastos, utilidad bruta, utilidad neta y margen para seguimiento gerencial.">
 <meta name="theme-color" content="#f8fafc">
 <meta name="author" content="AnualPrint">
 <meta name="robots" content="index,follow">
@@ -72,11 +72,13 @@ header{padding:30px 0 24px;border-bottom:1px solid rgba(148,163,184,.22);margin-
 .kcard::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
 .kv::before{background:linear-gradient(90deg,var(--av),transparent);}
 .kc::before{background:linear-gradient(90deg,var(--ac),transparent);}
+.kgasto::before{background:linear-gradient(90deg,#2563eb,transparent);}
 .ku::before{background:linear-gradient(90deg,var(--gold),transparent);}
+.kn::before{background:linear-gradient(90deg,#0f766e,transparent);}
 .km::before{background:linear-gradient(90deg,#60a5fa,transparent);}
 .klab{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:1.4px;margin-bottom:10px;font-weight:700;}
 .kval{font-family:'Inter',Arial,sans-serif;font-size:27px;font-weight:800;line-height:1.1;margin-bottom:6px;letter-spacing:0;}
-.kv .kval{color:#34d399;}.kc .kval{color:#f59e0b;}.ku .kval{color:#fde047;}.km .kval{color:#93c5fd;}
+.kv .kval{color:#34d399;}.kc .kval{color:#f59e0b;}.kgasto .kval{color:#60a5fa;}.ku .kval{color:#fde047;}.kn .kval{color:#2dd4bf;}.km .kval{color:#93c5fd;}
 .ksub{font-size:11px;color:var(--text2);}
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
 .fw{grid-column:1/-1;}
@@ -87,7 +89,7 @@ header{padding:30px 0 24px;border-bottom:1px solid rgba(148,163,184,.22);margin-
 .bv{background:rgba(16,185,129,.14);color:#6ee7b7;}.bc{background:rgba(217,119,6,.16);color:#fbbf24;}.bm{background:rgba(234,179,8,.14);color:#fde68a;}
 .cw{position:relative;height:240px;}.cwsm{position:relative;height:200px;}
 .twrap{overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12px;min-width:720px;}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:980px;}
 thead th{text-align:left;padding:11px 12px;font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);border-bottom:1px solid var(--border);font-weight:700;background:rgba(15,23,42,.45);}
 tbody tr{border-bottom:1px solid rgba(37,42,53,.5);transition:background .15s;}
 tbody tr:hover{background:rgba(255,255,255,.025);}
@@ -447,7 +449,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   .mgrid{gap:12px;}
   .cw{height:225px;}.cwsm{height:205px;}
   .twrap{margin-left:-8px;margin-right:-8px;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  table{min-width:680px;}
+  table{min-width:980px;}
   thead th,tbody td{padding:10px 11px;}
   .edt{width:148px;height:46px;font-size:16px!important;padding:9px 12px;}
   .data-intro{gap:12px;}
@@ -477,7 +479,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         </div>
         <div class="auth-hero">
           <h2>Gestiona tus reportes financieros mensuales y anuales</h2>
-          <p>Centraliza ventas, compras, utilidad y margen en reportes privados vinculados a tu cuenta.</p>
+          <p>Centraliza ventas, compras, gastos, utilidad bruta, utilidad neta y margen en reportes privados vinculados a tu cuenta.</p>
         </div>
       </div>
       <div class="auth-points">
@@ -638,7 +640,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <div class="onboarding-step" id="onboardingStep">Paso 1 de 4</div>
     <div class="onboarding-progress" id="onboardingProgress"></div>
     <div class="onboarding-title" id="onboardingTitle">Bienvenido a AnualPrint</div>
-    <div class="onboarding-copy" id="onboardingCopy">AnualPrint te permite registrar compras y ventas mensuales para generar reportes financieros anuales.</div>
+    <div class="onboarding-copy" id="onboardingCopy">AnualPrint te permite registrar ventas, compras y gastos mensuales para generar reportes financieros anuales.</div>
     <label class="onboarding-check"><input type="checkbox" id="onboardingSkip"> No volver a mostrar</label>
     <div class="onboarding-actions">
       <button class="auth-btn auth-ghost" id="onboardingBack">Atr&aacute;s</button>
@@ -671,12 +673,15 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
   <div class="numora-suggestions" id="numoraSuggestions">
     <button class="numora-chip" type="button">&iquest;Qu&eacute; hago primero?</button>
     <button class="numora-chip" type="button">Gu&iacute;ame para registrar datos</button>
-    <button class="numora-chip" type="button">Expl&iacute;came mi dashboard</button>
-    <button class="numora-chip" type="button">&iquest;C&oacute;mo interpreto mi margen?</button>
+    <button class="numora-chip" type="button">&iquest;Qu&eacute; son los gastos?</button>
+    <button class="numora-chip" type="button">Diferencia entre compras y gastos</button>
+    <button class="numora-chip" type="button">&iquest;Qu&eacute; es utilidad neta?</button>
+    <button class="numora-chip" type="button">Analiza mi utilidad neta</button>
+    <button class="numora-chip" type="button">&iquest;Por qu&eacute; mi utilidad neta baj&oacute;?</button>
+    <button class="numora-chip" type="button">Gu&iacute;ame para registrar gastos</button>
     <button class="numora-chip" type="button">&iquest;C&oacute;mo guardo un reporte?</button>
     <button class="numora-chip" type="button">&iquest;C&oacute;mo genero un informe?</button>
     <button class="numora-chip" type="button">Revisa mi avance anual</button>
-    <button class="numora-chip" type="button">&iquest;Qu&eacute; significa utilidad bruta?</button>
   </div>
   <div class="numora-footer">
     <form class="numora-form" id="numoraForm">
@@ -735,22 +740,27 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     <button class="tab active" data-tab="general" onclick="setTab('general',this)">Vista General</button>
     <button class="tab" data-tab="ventas" onclick="setTab('ventas',this)">Ventas</button>
     <button class="tab" data-tab="compras" onclick="setTab('compras',this)">Compras</button>
+    <button class="tab" data-tab="gastos" onclick="setTab('gastos',this)">Gastos</button>
     <button class="tab" data-tab="datos" onclick="setTab('datos',this)">Registro de Datos</button>
     <button class="tab" data-tab="reportes" onclick="setTab('reportes',this)">Mis reportes</button>
   </div>
 
   <div class="kpi-grid">
     <div class="kcard kv"><div class="klab">Total Ventas</div><div class="kval" id="kV">&mdash;</div><div class="ksub" id="kVs">Acumulado anual</div></div>
-    <div class="kcard kc"><div class="klab">Total Compras</div><div class="kval" id="kC">&mdash;</div><div class="ksub" id="kCs">Acumulado anual</div></div>
+    <div class="kcard kc"><div class="klab">Total Compras</div><div class="kval" id="kC">&mdash;</div><div class="ksub" id="kCs">Costo directo anual</div></div>
+    <div class="kcard kgasto"><div class="klab">Total Gastos</div><div class="kval" id="kG">&mdash;</div><div class="ksub" id="kGs">Gasto operativo anual</div></div>
     <div class="kcard ku"><div class="klab">Utilidad Bruta</div><div class="kval" id="kU">&mdash;</div><div class="ksub" id="kUs">Ventas &minus; Compras</div></div>
-    <div class="kcard km"><div class="klab">Margen</div><div class="kval" id="kM">&mdash;</div><div class="ksub">Utilidad / Ventas</div></div>
+    <div class="kcard kn"><div class="klab">Utilidad Neta</div><div class="kval" id="kN">&mdash;</div><div class="ksub" id="kNs">Ventas &minus; Compras &minus; Gastos</div></div>
+    <div class="kcard km"><div class="klab">Margen Bruto %</div><div class="kval" id="kM">&mdash;</div><div class="ksub">Utilidad bruta / Ventas</div></div>
   </div>
 
   <div id="tab-general">
     <div class="mgrid">
-      <div class="ccard fw"><div class="ch"><span class="ct">Comparativo Mensual &mdash; Compras vs Ventas</span><span class="badge bm">Anual</span></div><div class="cw"><canvas id="cBar"></canvas></div></div>
+      <div class="ccard fw"><div class="ch"><span class="ct">Comparativo Mensual &mdash; Ventas, Compras y Gastos</span><span class="badge bm">Anual</span></div><div class="cw"><canvas id="cBar"></canvas></div></div>
       <div class="ccard"><div class="ch"><span class="ct">Tendencia de Ventas</span><span class="badge bv">L&iacute;nea</span></div><div class="cwsm"><canvas id="cLV"></canvas></div></div>
       <div class="ccard"><div class="ch"><span class="ct">Tendencia de Compras</span><span class="badge bc">L&iacute;nea</span></div><div class="cwsm"><canvas id="cLC"></canvas></div></div>
+      <div class="ccard"><div class="ch"><span class="ct">Tendencia de Gastos</span><span class="badge bm">L&iacute;nea</span></div><div class="cwsm"><canvas id="cLG"></canvas></div></div>
+      <div class="ccard"><div class="ch"><span class="ct">Utilidad Bruta vs Neta</span><span class="badge bm">Resultado</span></div><div class="cwsm"><canvas id="cUtil"></canvas></div></div>
       <div class="ccard"><div class="ch"><span class="ct">Distribuci&oacute;n Anual</span><span class="badge bm">%</span></div><div class="cwsm"><canvas id="cDon"></canvas></div></div>
       <div class="ccard"><div class="ch"><span class="ct">Top Meses por Ventas</span><span class="badge bv">Ranking</span></div><div style="padding-top:8px" id="topList" class="plist"></div></div>
     </div>
@@ -770,12 +780,19 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
     </div>
   </div>
 
+  <div id="tab-gastos" style="display:none">
+    <div class="mgrid">
+      <div class="ccard fw"><div class="ch"><span class="ct">Gastos Mensuales</span><span class="badge bm">Barras</span></div><div class="cw"><canvas id="cGO"></canvas></div></div>
+      <div class="ccard fw"><div class="ch"><span class="ct">Acumulado de Gastos</span><span class="badge bm">&Aacute;rea</span></div><div class="cw"><canvas id="cGA"></canvas></div></div>
+    </div>
+  </div>
+
   <div id="tab-datos" style="display:none">
     <div class="ccard">
       <div class="data-intro">
         <div>
           <div class="data-title">Registro Financiero Mensual</div>
-          <div class="data-copy">Ingrese las ventas y compras correspondientes a cada mes. El sistema calcular&aacute; autom&aacute;ticamente la utilidad y el margen.</div>
+          <div class="data-copy">Ingrese ventas, compras directas y gastos operativos. El sistema calcular&aacute; utilidad bruta, utilidad neta y margen bruto.</div>
         </div>
         <div class="data-actions">
           <button class="btn-action btn-secondary" id="clearYearBtn">Limpiar datos del a&ntilde;o</button>
@@ -789,21 +806,25 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
             <th>Mes</th>
             <th style="text-align:right">Ventas <span id="thV">(S/)</span></th>
             <th style="text-align:right">Compras <span id="thC">(S/)</span></th>
-            <th style="text-align:right">Utilidad</th>
-            <th style="text-align:right">Margen %</th>
+            <th style="text-align:right">Gastos <span id="thG">(S/)</span></th>
+            <th style="text-align:right">Utilidad Bruta</th>
+            <th style="text-align:right">Utilidad Neta</th>
+            <th style="text-align:right">Margen Bruto %</th>
           </tr></thead>
           <tbody id="dtbody"></tbody>
           <tfoot><tr class="trow">
             <td>TOTAL</td>
             <td style="text-align:right" class="vv" id="totV">&mdash;</td>
             <td style="text-align:right" class="vc" id="totC">&mdash;</td>
+            <td style="text-align:right" id="totG">&mdash;</td>
             <td style="text-align:right" id="totU">&mdash;</td>
+            <td style="text-align:right" id="totN">&mdash;</td>
             <td style="text-align:right" id="totP">&mdash;</td>
           </tr></tfoot>
         </table>
       </div>
       <div class="data-msg" id="dataMsg"></div>
-      <p class="hint">&#9999;&#65039; Haz clic en cualquier campo para editar. Puedes escribir 15000 o 1,250,000.50; al salir del campo se aplicar&aacute;n comas y 2 decimales.</p>
+      <p class="hint">Haz clic en ventas, compras o gastos para editar. Puedes escribir 15000 o 1,250,000.50; al salir se aplicar&aacute;n comas y 2 decimales.</p>
     </div>
   </div>
 
@@ -842,18 +863,33 @@ var emailCooldowns = {};
 var emailCooldownTimers = {};
 var onboardingStepIndex = 0;
 var onboardingSteps = [
-  {title:'Bienvenido a AnualPrint',copy:'AnualPrint permite registrar compras y ventas mensuales para generar reportes financieros anuales claros y listos para revisi\u00f3n gerencial.'},
-  {title:'Ingresa tus datos mensuales',copy:'Ve a Registro Financiero Mensual y coloca las ventas y compras de cada mes. Puedes editar los importes cuando lo necesites.'},
-  {title:'Revisa tus resultados',copy:'El dashboard calcula autom\u00e1ticamente ventas, compras, utilidad bruta y margen para que puedas evaluar el avance del periodo.'},
+  {title:'Bienvenido a AnualPrint',copy:'AnualPrint permite registrar ventas, compras y gastos mensuales para generar reportes financieros anuales claros y listos para revisi\u00f3n gerencial.'},
+  {title:'Ingresa tus datos mensuales',copy:'Ve a Registro Financiero Mensual y coloca ventas, compras directas y gastos de cada mes. Puedes editar los importes cuando lo necesites.'},
+  {title:'Revisa tus resultados',copy:'El dashboard calcula ventas, compras, gastos, utilidad bruta, utilidad neta y margen bruto para evaluar el avance del periodo.'},
   {title:'Guarda y genera reportes',copy:'Guarda tus reportes, c\u00e1rgalos luego desde Mis reportes y genera una versi\u00f3n imprimible o PDF para reuniones.'}
 ];
 var numoraMessages = [];
 var numoraBusy = false;
-var numoraWelcome = 'Hola, soy Númora, tu asesor de AnualPrint. Puedo ayudarte a registrar tus datos, entender tus resultados, guardar reportes y generar informes financieros.\n\n¿Con qué te puedo ayudar hoy?';
+var numoraWelcome = 'Hola, soy N\u00famora, tu asesor de AnualPrint. Puedo ayudarte a registrar ventas, compras y gastos, entender utilidad bruta, utilidad neta y margen, guardar reportes y generar informes financieros.\n\n\u00bfCon qu\u00e9 te puedo ayudar hoy?';
 
+function normalizeMonthlyArray(values){
+  var arr=Array.isArray(values)?values.slice(0,12).map(function(v){return toMoneyNumber(v);}):[];
+  while(arr.length<12)arr.push(0);
+  return arr;
+}
+function createYearData(source){
+  source=source||{};
+  return {
+    ventas:normalizeMonthlyArray(source.ventas),
+    compras:normalizeMonthlyArray(source.compras),
+    gastos:normalizeMonthlyArray(source.gastos)
+  };
+}
 function getYD(year){
   if(!allData[year]){
-    allData[year]={ventas:Array(12).fill(0),compras:Array(12).fill(0)};
+    allData[year]=createYearData();
+  }else if(!allData[year].gastos||allData[year].ventas.length!==12||allData[year].compras.length!==12||allData[year].gastos.length!==12){
+    allData[year]=createYearData(allData[year]);
   }
   return allData[year];
 }
@@ -956,18 +992,23 @@ var GR='rgba(148,163,184,.14)';
 function buildCharts(){
   var year=getYear();
   var d=getYD(year);
-  var V=d.ventas,C=d.compras;
+  var V=d.ventas,C=d.compras,G=d.gastos;
   var maxV=Math.max.apply(null,V);
   var maxC=Math.max.apply(null,C);
+  var maxG=Math.max.apply(null,G);
   var safeMaxV=maxV>0?maxV:1;
   var safeMaxC=maxC>0?maxC:1;
+  var safeMaxG=maxG>0?maxG:1;
+  var gross=V.map(function(v,i){return +(v-C[i]).toFixed(2);});
+  var net=V.map(function(v,i){return +(v-C[i]-G[i]).toFixed(2);});
   refreshChartTheme();
 
   kill('bar');
   CH.bar=new Chart(document.getElementById('cBar').getContext('2d'),{type:'bar',
     data:{labels:MO,datasets:[
       {label:'Ventas',data:V,backgroundColor:'rgba(16,185,129,.72)',borderColor:'rgba(16,185,129,1)',borderWidth:1,borderRadius:5},
-      {label:'Compras',data:C,backgroundColor:'rgba(217,119,6,.72)',borderColor:'rgba(217,119,6,1)',borderWidth:1,borderRadius:5}
+      {label:'Compras',data:C,backgroundColor:'rgba(217,119,6,.72)',borderColor:'rgba(217,119,6,1)',borderWidth:1,borderRadius:5},
+      {label:'Gastos',data:G,backgroundColor:'rgba(37,99,235,.70)',borderColor:'rgba(37,99,235,1)',borderWidth:1,borderRadius:5}
     ]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:CHART_THEME.axis,font:{family:'Inter',weight:'600'}}},tooltip:mkTT()},
       scales:{x:{grid:{color:GR},ticks:TX},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'500'},callback:fmtK}}}}});
@@ -984,12 +1025,27 @@ function buildCharts(){
   CH.lc=new Chart(clc,{type:'line',data:{labels:MO,datasets:[{data:C,borderColor:'#d97706',backgroundColor:gc,fill:true,tension:.4,pointBackgroundColor:'#d97706',pointRadius:4,pointHoverRadius:6}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:10,weight:'500'}}},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:10,weight:'500'},callback:fmtK}}}}});
 
+  kill('lg');
+  var clg=document.getElementById('cLG').getContext('2d');
+  var gg=clg.createLinearGradient(0,0,0,200);gg.addColorStop(0,'rgba(37,99,235,.22)');gg.addColorStop(1,'rgba(37,99,235,0)');
+  CH.lg=new Chart(clg,{type:'line',data:{labels:MO,datasets:[{data:G,borderColor:'#2563eb',backgroundColor:gg,fill:true,tension:.4,pointBackgroundColor:'#2563eb',pointRadius:4,pointHoverRadius:6}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:10,weight:'500'}}},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:10,weight:'500'},callback:fmtK}}}}});
+
+  kill('util');
+  CH.util=new Chart(document.getElementById('cUtil').getContext('2d'),{type:'bar',
+    data:{labels:MO,datasets:[
+      {label:'Utilidad Bruta',data:gross,backgroundColor:'rgba(234,179,8,.76)',borderColor:'#ca8a04',borderWidth:1,borderRadius:5},
+      {label:'Utilidad Neta',data:net,backgroundColor:'rgba(15,118,110,.76)',borderColor:'#0f766e',borderWidth:1,borderRadius:5}
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'600'}}},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:10,weight:'500'}}},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:10,weight:'500'},callback:fmtK}}}}});
+
   var tV=V.reduce(function(a,b){return a+b;},0);
   var tC=C.reduce(function(a,b){return a+b;},0);
-  var tU=tV-tC;
+  var tG=G.reduce(function(a,b){return a+b;},0);
+  var tN=tV-tC-tG;
   kill('don');
   CH.don=new Chart(document.getElementById('cDon').getContext('2d'),{type:'doughnut',
-    data:{labels:['Ventas','Compras','Utilidad'],datasets:[{data:[tV,tC,Math.max(0,tU)],backgroundColor:['rgba(16,185,129,.86)','rgba(217,119,6,.86)','rgba(234,179,8,.86)'],borderColor:CHART_THEME.donutBorder,borderWidth:2}]},
+    data:{labels:['Compras','Gastos','Utilidad Neta'],datasets:[{data:[tC,tG,Math.max(0,tN)],backgroundColor:['rgba(217,119,6,.86)','rgba(37,99,235,.86)','rgba(15,118,110,.86)'],borderColor:CHART_THEME.donutBorder,borderWidth:2}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:'65%',plugins:{legend:{position:'bottom',labels:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'600'},padding:12}},tooltip:mkTT()}}});
 
   var sorted=V.map(function(v,i){return{i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
@@ -1022,41 +1078,61 @@ function buildCharts(){
   CH.ca=new Chart(cca,{type:'line',data:{labels:MO,datasets:[{data:avC,borderColor:'#d97706',backgroundColor:gca,fill:true,tension:.3,pointBackgroundColor:'#d97706',pointRadius:4}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:TX},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'500'},callback:fmtK}}}}});
 
+  kill('go');
+  CH.go=new Chart(document.getElementById('cGO').getContext('2d'),{type:'bar',
+    data:{labels:MO,datasets:[{data:G,backgroundColor:G.map(function(v){return 'rgba(37,99,235,'+(.4+.5*v/safeMaxG).toFixed(2)+')';}),borderColor:'#2563eb',borderWidth:1,borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:TX},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'500'},callback:fmtK}}}}});
+
+  var avG=[];G.reduce(function(a,v){var n=+(a+v).toFixed(2);avG.push(n);return n;},0);
+  kill('ga');
+  var cga=document.getElementById('cGA').getContext('2d');
+  var gga=cga.createLinearGradient(0,0,0,240);gga.addColorStop(0,'rgba(37,99,235,.26)');gga.addColorStop(1,'rgba(37,99,235,0)');
+  CH.ga=new Chart(cga,{type:'line',data:{labels:MO,datasets:[{data:avG,borderColor:'#2563eb',backgroundColor:gga,fill:true,tension:.3,pointBackgroundColor:'#2563eb',pointRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:TX},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'500'},callback:fmtK}}}}});
+
   updateKPI();
   buildTable();
 }
 
 function updateKPI(){
-  var d=getYD(getYear());var V=d.ventas,C=d.compras;
+  var d=getYD(getYear());var V=d.ventas,C=d.compras,G=d.gastos;
   var tV=V.reduce(function(a,b){return a+b;},0);
   var tC=C.reduce(function(a,b){return a+b;},0);
-  var tU=tV-tC,mg=tV>0?(tU/tV*100):0;
+  var tG=G.reduce(function(a,b){return a+b;},0);
+  var tU=tV-tC,tN=tU-tG,mg=tV>0?(tU/tV*100):0;
   document.getElementById('kV').textContent=fmt(tV);
   document.getElementById('kC').textContent=fmt(tC);
+  document.getElementById('kG').textContent=fmt(tG);
   document.getElementById('kU').textContent=fmt(tU);
+  document.getElementById('kN').textContent=fmt(tN);
   document.getElementById('kM').textContent=mg.toFixed(1)+'%';
   document.getElementById('kVs').textContent=fmt(tV)+' total';
-  document.getElementById('kCs').textContent=fmt(tC)+' total';
+  document.getElementById('kCs').textContent='Costos directos: '+fmt(tC);
+  document.getElementById('kGs').textContent='Operativos: '+fmt(tG);
   document.getElementById('kUs').textContent=fmt(tU);
+  document.getElementById('kNs').textContent=fmt(tN);
 }
 
 function buildTable(){
-  var d=getYD(getYear());var V=d.ventas,C=d.compras;
+  var d=getYD(getYear());var V=d.ventas,C=d.compras,G=d.gastos;
   var s=cur==='PEN'?'S/':'$';
   document.getElementById('thV').textContent='('+s+')';
   document.getElementById('thC').textContent='('+s+')';
+  document.getElementById('thG').textContent='('+s+')';
   document.getElementById('curLabel').textContent=cur==='PEN'?'S/ Soles':'$ D\u00f3lares';
-  var tV=0,tC=0;
+  var tV=0,tC=0,tG=0;
   var tbody=document.getElementById('dtbody');
   tbody.innerHTML='';
   MOF.forEach(function(m,i){
-    var v=V[i],c=C[i],u=v-c,p=v>0?(u/v*100):0;
-    tV+=v;tC+=c;
+    var v=V[i],c=C[i],g=G[i],u=v-c,n=u-g,p=v>0?(u/v*100):0;
+    tV+=v;tC+=c;tG+=g;
     var tr=document.createElement('tr');
     tr.innerHTML='<td class="mname">'+m+'</td>'
       +'<td style="text-align:right"><input class="edt money-input vv" type="text" inputmode="decimal" autocomplete="off" value="'+formatMoneyInput(v)+'" data-i="'+i+'" data-t="ventas" aria-label="Ventas de '+m+'"></td>'
       +'<td style="text-align:right"><input class="edt money-input edtc vc" type="text" inputmode="decimal" autocomplete="off" value="'+formatMoneyInput(c)+'" data-i="'+i+'" data-t="compras" aria-label="Compras de '+m+'"></td>'
+      +'<td style="text-align:right"><input class="edt money-input vc" type="text" inputmode="decimal" autocomplete="off" value="'+formatMoneyInput(g)+'" data-i="'+i+'" data-t="gastos" aria-label="Gastos de '+m+'"></td>'
       +'<td style="text-align:right" class="'+(u>=0?'vu':'vneg')+'">'+fmt(u)+'</td>'
+      +'<td style="text-align:right" class="'+(n>=0?'vu':'vneg')+'">'+fmt(n)+'</td>'
       +'<td style="text-align:right" class="'+(p>=0?'vu':'vneg')+'">'+p.toFixed(1)+'%</td>';
     tbody.appendChild(tr);
   });
@@ -1066,11 +1142,14 @@ function buildTable(){
     inp.addEventListener('blur',onEdit);
     inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
   });
-  var tU=tV-tC,tP=tV>0?(tU/tV*100):0;
+  var tU=tV-tC,tN=tU-tG,tP=tV>0?(tU/tV*100):0;
   document.getElementById('totV').textContent=fmt(tV);
   document.getElementById('totC').textContent=fmt(tC);
+  document.getElementById('totG').textContent=fmt(tG);
   document.getElementById('totU').textContent=fmt(tU);
   document.getElementById('totU').className=tU>=0?'vu':'vneg';
+  document.getElementById('totN').textContent=fmt(tN);
+  document.getElementById('totN').className=tN>=0?'vu':'vneg';
   document.getElementById('totP').textContent=tP.toFixed(1)+'%';
   document.getElementById('totP').className=tP>=0?'vu':'vneg';
 }
@@ -1096,13 +1175,14 @@ function onEdit(e){
   var d=getYD(getYear());var i=parseInt(e.target.dataset.i);
   var v=parseMoney(e.target.value);
   e.target.value=formatMoneyInput(v);
+  if(!d[e.target.dataset.t])d[e.target.dataset.t]=Array(12).fill(0);
   d[e.target.dataset.t][i]=v;
   setDataMessage('C\u00e1lculos actualizados para '+MOF[i]+'.');
   buildCharts();buildTable();
 }
 function clearYearData(){
-  if(!confirm('\u00bfSeguro que deseas limpiar ventas y compras del a\u00f1o seleccionado?'))return;
-  allData[String(getYear())]={ventas:Array(12).fill(0),compras:Array(12).fill(0)};
+  if(!confirm('\u00bfSeguro que deseas limpiar ventas, compras y gastos del a\u00f1o seleccionado?'))return;
+  allData[String(getYear())]=createYearData();
   setReportMessage();
   buildCharts();
   buildTable();
@@ -1110,7 +1190,7 @@ function clearYearData(){
   showToast('Datos del a\u00f1o limpiados.','ok');
 }
 function setTab(t,btn){
-  ['general','ventas','compras','datos','reportes'].forEach(function(x){document.getElementById('tab-'+x).style.display=x===t?'':'none';});
+  ['general','ventas','compras','gastos','datos','reportes'].forEach(function(x){document.getElementById('tab-'+x).style.display=x===t?'':'none';});
   document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
   var activeBtn=btn||document.querySelector('.tab[data-tab="'+t+'"]');
   if(activeBtn)activeBtn.classList.add('active');
@@ -1479,18 +1559,27 @@ function getNumoraContext(){
   var d=getYD(getYear());
   var V=d.ventas.map(function(v){return toMoneyNumber(v);});
   var C=d.compras.map(function(v){return toMoneyNumber(v);});
+  var G=d.gastos.map(function(v){return toMoneyNumber(v);});
   var tV=V.reduce(function(a,b){return a+b;},0);
   var tC=C.reduce(function(a,b){return a+b;},0);
+  var tG=G.reduce(function(a,b){return a+b;},0);
   var tU=tV-tC;
+  var tN=tU-tG;
   var margin=tV>0?+(tU/tV*100).toFixed(2):0;
+  var netMargin=tV>0?+(tN/tV*100).toFixed(2):0;
   return {
     year:parseInt(getYear(),10),
     currency:cur,
     ventas:V,
     compras:C,
+    gastos:G,
     totalVentas:toMoneyNumber(tV),
     totalCompras:toMoneyNumber(tC),
+    totalGastos:toMoneyNumber(tG),
     utilidadBruta:toMoneyNumber(tU),
+    utilidadNeta:toMoneyNumber(tN),
+    margenBruto:margin,
+    margenNeto:netMargin,
     margen:margin,
     hasLoadedReport:!!currentReportId,
     reportTitle:currentReportTitle||''
@@ -1513,18 +1602,47 @@ function getLocalNumoraReply(message,ctx){
     if(!isFinite(n))n=0;
     return symbol+' '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   }
-  var allZero=ctx.totalVentas===0&&ctx.totalCompras===0;
+  var allZero=ctx.totalVentas===0&&ctx.totalCompras===0&&ctx.totalGastos===0;
+  var margenBruto=typeof ctx.margenBruto==='number'?ctx.margenBruto:ctx.margen;
+  var gastosAltos=(ctx.ventas||[]).map(function(v,i){return{month:MOF[i],value:(ctx.gastos||[])[i]||0,ratio:v>0?((ctx.gastos||[])[i]||0)/v:0};}).filter(function(item){return item.ratio>.35;});
+  var mesesNetaNegativa=(ctx.ventas||[]).map(function(v,i){return{month:MOF[i],value:v-((ctx.compras||[])[i]||0)-((ctx.gastos||[])[i]||0)};}).filter(function(item){return item.value<0;});
   if(has('que hago primero','primer paso','empezar','inicio','como empiezo')){
-    return 'Primero ve a **Registro de Datos**. Ingresa ventas y compras por mes, revisa la **Vista General** y luego usa **Guardar reporte** para conservar el avance.';
+    return 'Primero ve a **Registro de Datos**. Ingresa ventas, compras y gastos por mes, revisa la **Vista General** y luego usa **Guardar reporte** para conservar el avance.';
+  }
+  if(has('registrar gastos','ingresar gastos','guia me para registrar gastos','guiame para registrar gastos')){
+    return 'Para registrar gastos:\n1. Abre **Registro de Datos**.\n2. Ubica la columna **Gastos**.\n3. Ingresa gastos operativos o administrativos por mes, como servicios, alquileres, sueldos u otros desembolsos.\n4. AnualPrint recalcular\u00e1 la utilidad neta autom\u00e1ticamente.';
   }
   if(has('registrar datos','ingresar datos','registrar ventas','registrar compras','ventas y compras')){
-    return 'Para registrar datos:\n1. Abre **Registro de Datos**.\n2. Elige el a\u00f1o y la moneda.\n3. Ingresa ventas y compras por mes.\n4. Al salir del campo, AnualPrint formatea el monto y recalcula utilidad y margen.';
+    return 'Para registrar datos:\n1. Abre **Registro de Datos**.\n2. Elige el a\u00f1o y la moneda.\n3. Ingresa ventas, compras y gastos por mes.\n4. Al salir del campo, AnualPrint formatea el monto y recalcula utilidad bruta, utilidad neta y margen bruto.';
+  }
+  if(has('diferencia entre compras y gastos','compras y gastos','compras vs gastos')){
+    return 'En AnualPrint, las **compras** representan costos directos relacionados con adquisici\u00f3n de productos, insumos o mercader\u00eda. Los **gastos** representan desembolsos operativos o administrativos, como servicios, alquileres, sueldos u otros gastos del negocio.';
+  }
+  if(has('que son los gastos','gastos','gasto operativo')){
+    return 'Los **gastos** son desembolsos operativos o administrativos que no se registran como compras directas: servicios, alquileres, sueldos, mantenimiento, comisiones u otros gastos del negocio. En AnualPrint reducen la utilidad neta.';
+  }
+  if(has('utilidad neta negativa','neta negativa','por que mi utilidad neta es negativa','perdida neta','por que mi utilidad neta bajo')){
+    if(ctx.utilidadNeta>=0)return 'Con los datos actuales tu utilidad neta no es negativa: es **'+money(ctx.utilidadNeta)+'**. Si baja, normalmente se debe a mayores compras directas, mayores gastos operativos o menores ventas.';
+    return 'Tu utilidad neta es negativa porque ventas menos compras y gastos da **'+money(ctx.utilidadNeta)+'**. Datos actuales: ventas **'+money(ctx.totalVentas)+'**, compras **'+money(ctx.totalCompras)+'** y gastos **'+money(ctx.totalGastos)+'**. Revisa meses con gastos altos y meses donde compras + gastos superan ventas.';
+  }
+  if(has('analiza mi utilidad neta','analizar utilidad neta')){
+    if(allZero)return 'A\u00fan no hay datos registrados. Ingresa ventas, compras y gastos para analizar tu utilidad neta.';
+    var base='Tu utilidad neta actual es **'+money(ctx.utilidadNeta)+'**. Se calcula desde ventas **'+money(ctx.totalVentas)+'** menos compras **'+money(ctx.totalCompras)+'** y gastos **'+money(ctx.totalGastos)+'**.';
+    if(ctx.utilidadNeta<0)base+=' El resultado neto es negativo; revisa meses con gastos altos o compras que superen las ventas.';
+    else base+=' El resultado neto del periodo es positivo.';
+    return base;
+  }
+  if(has('utilidad neta','resultado neto')){
+    return 'La **utilidad neta** es el resultado final despu\u00e9s de restar compras y gastos a las ventas. En AnualPrint se calcula como:\n\n**Utilidad neta = Ventas - Compras - Gastos**.\n\nCon tus datos actuales es **'+money(ctx.utilidadNeta)+'**.';
+  }
+  if(has('diferencia entre utilidad bruta y utilidad neta','bruta y neta')){
+    return 'La **utilidad bruta** mide ventas menos compras directas. La **utilidad neta** descuenta adem\u00e1s los gastos operativos. Por eso la utilidad neta puede ser menor que la utilidad bruta.';
   }
   if(has('utilidad bruta','utilidad','ganancia')){
     return 'La **utilidad bruta** es la diferencia entre ventas y compras. En AnualPrint se calcula como:\n\n**Utilidad bruta = Ventas - Compras**.';
   }
   if(has('margen','rentabilidad','porcentaje')){
-    return 'El **margen** indica qu\u00e9 porcentaje de tus ventas queda como utilidad despu\u00e9s de restar compras.\n\n**Margen = Utilidad bruta / Ventas x 100**.';
+    return 'El **margen bruto** indica qu\u00e9 porcentaje de tus ventas queda como utilidad bruta despu\u00e9s de restar compras.\n\n**Margen bruto = Utilidad bruta / Ventas x 100**.';
   }
   if(has('guardar como nuevo')){
     return 'Usa **Guardar como nuevo** para crear otra versi\u00f3n del reporte actual sin sobrescribir el reporte cargado.';
@@ -1539,9 +1657,12 @@ function getLocalNumoraReply(message,ctx){
     return 'Para generar el informe, presiona **Imprimir Reporte**. Se abrir\u00e1 una previsualizaci\u00f3n formal con botones visibles para **Cancelar** o **Imprimir / Guardar PDF**.';
   }
   if(has('como voy','resultado','analisis','dashboard','avance anual','revisa mi avance','explicame mi dashboard')){
-    if(allZero)return 'A\u00fan no hay datos registrados para este a\u00f1o. Para obtener un an\u00e1lisis, ingresa ventas y compras en **Registro de Datos**.';
-    var status=ctx.utilidadBruta<0?'negativo':ctx.margen<15?'bajo':ctx.margen<30?'moderado':'saludable';
-    return 'En el a\u00f1o '+ctx.year+' tienes:\n1. Ventas totales: **'+money(ctx.totalVentas)+'**.\n2. Compras totales: **'+money(ctx.totalCompras)+'**.\n3. Utilidad bruta: **'+money(ctx.utilidadBruta)+'**.\n4. Margen: **'+ctx.margen.toFixed(2)+'%**.\n\nResultado '+status+'.';
+    if(allZero)return 'A\u00fan no hay datos registrados para este a\u00f1o. Para obtener un an\u00e1lisis, ingresa ventas, compras y gastos en **Registro de Datos**.';
+    var status=ctx.utilidadNeta<0?'negativo':margenBruto<15?'bajo':margenBruto<30?'moderado':'saludable';
+    var reply='En el a\u00f1o '+ctx.year+' tienes:\n1. Ventas totales: **'+money(ctx.totalVentas)+'**.\n2. Compras totales: **'+money(ctx.totalCompras)+'**.\n3. Gastos totales: **'+money(ctx.totalGastos)+'**.\n4. Utilidad bruta: **'+money(ctx.utilidadBruta)+'**.\n5. Utilidad neta: **'+money(ctx.utilidadNeta)+'**.\n6. Margen bruto: **'+margenBruto.toFixed(2)+'%**.\n\nResultado neto '+status+'.';
+    if(gastosAltos.length)reply+='\n\nMeses con gastos altos respecto a ventas: **'+gastosAltos.map(function(item){return item.month;}).join(', ')+'**.';
+    if(mesesNetaNegativa.length)reply+='\nMeses con utilidad neta negativa: **'+mesesNetaNegativa.map(function(item){return item.month;}).join(', ')+'**.';
+    return reply;
   }
   if(has('cambiar ano','cambiar a\u00f1o','selector','periodo')){
     return 'Para cambiar de a\u00f1o, usa el selector **A\u00f1o** en la cabecera. Si el periodo no tiene datos, iniciar\u00e1 en cero.';
@@ -1553,9 +1674,9 @@ function getLocalNumoraReply(message,ctx){
     return 'Para cambiar el tema, usa el selector **Tema**. La preferencia queda guardada en tu dispositivo.';
   }
   if(has('cero','sin datos','no hay datos')){
-    return 'A\u00fan no hay datos registrados. Te recomiendo comenzar ingresando ventas y compras del primer mes disponible en **Registro de Datos**.';
+    return 'A\u00fan no hay datos registrados. Te recomiendo comenzar ingresando ventas, compras y gastos del primer mes disponible en **Registro de Datos**.';
   }
-  return 'Puedo ayudarte principalmente con el uso de AnualPrint, registro de datos, reportes, ventas, compras, utilidad, margen y an\u00e1lisis financiero b\u00e1sico dentro de la aplicaci\u00f3n.';
+  return 'Puedo ayudarte principalmente con el uso de AnualPrint, registro de datos, reportes, ventas, compras, gastos, utilidad bruta, utilidad neta, margen y an\u00e1lisis financiero b\u00e1sico dentro de la aplicaci\u00f3n.';
 }
 async function sendNumoraMessage(text){
   if(numoraBusy)return;
@@ -2012,7 +2133,8 @@ function getCurrentReportData(title){
     year:parseInt(getYear(),10),
     currency:cur,
     ventas:d.ventas.map(function(v){return toMoneyNumber(v);}),
-    compras:d.compras.map(function(v){return toMoneyNumber(v);})
+    compras:d.compras.map(function(v){return toMoneyNumber(v);}),
+    gastos:d.gastos.map(function(v){return toMoneyNumber(v);})
   };
 }
 async function saveReport(asNew){
@@ -2076,7 +2198,7 @@ async function loadReport(id){
   if(!supabaseClient||!currentUser)return;
   showLoading('Cargando reporte seleccionado...');
   var res=await supabaseClient.from('reports')
-    .select('id,title,year,currency,ventas,compras,created_at,updated_at')
+    .select('id,title,year,currency,ventas,compras,gastos,created_at,updated_at')
     .eq('id',id)
     .eq('user_id',currentUser.id)
     .single();
@@ -2086,7 +2208,7 @@ async function loadReport(id){
   document.getElementById('yearSelect').value=String(r.year);
   cur=r.currency==='USD'?'USD':'PEN';
   document.querySelectorAll('.cur-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-cur')===cur);});
-  allData[String(r.year)]={ventas:r.ventas.map(function(v){return toMoneyNumber(v);}),compras:r.compras.map(function(v){return toMoneyNumber(v);})};
+  allData[String(r.year)]=createYearData(r);
   currentReportId=r.id;
   currentReportTitle=r.title;
   setReportMessage();
@@ -2155,31 +2277,34 @@ function doPrint(){
 
   try{
   var year=getYear();
-  var d=getYD(year);var V=d.ventas,C=d.compras;
+  var d=getYD(year);var V=d.ventas,C=d.compras,G=d.gastos;
   var s=cur==='PEN'?'S/':'$';
   var curName=cur==='PEN'?'Soles (PEN)':'D\u00f3lares (USD)';
   var tV=V.reduce(function(a,b){return a+b;},0);
   var tC=C.reduce(function(a,b){return a+b;},0);
-  var tU=tV-tC,mg=tV>0?(tU/tV*100):0;
-  var avV=[],avC=[];
+  var tG=G.reduce(function(a,b){return a+b;},0);
+  var tU=tV-tC,tN=tU-tG,mg=tV>0?(tU/tV*100):0,mgN=tV>0?(tN/tV*100):0;
+  var avV=[],avC=[],avG=[];
   V.reduce(function(a,v){var n=+(a+v).toFixed(2);avV.push(n);return n;},0);
   C.reduce(function(a,v){var n=+(a+v).toFixed(2);avC.push(n);return n;},0);
-  var utils=V.map(function(v,i){return +(v-C[i]).toFixed(2);});
+  G.reduce(function(a,v){var n=+(a+v).toFixed(2);avG.push(n);return n;},0);
+  var gross=V.map(function(v,i){return +(v-C[i]).toFixed(2);});
+  var net=V.map(function(v,i){return +(v-C[i]-G[i]).toFixed(2);});
   var now=new Date();
   var dateStr=now.toLocaleDateString('es-PE',{day:'2-digit',month:'long',year:'numeric'});
   function fv(x){var n=Number(x);if(!isFinite(n))n=0;return s+' '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
   function fk(x){var n=Number(x);if(!isFinite(n))n=0;return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
   var rows=MOF.map(function(m,i){
-    var u=V[i]-C[i],p=V[i]>0?(u/V[i]*100):0;
-    return '<tr><td class="mn">'+m+'</td><td class="n">'+fv(V[i])+'</td><td class="n">'+fv(C[i])+'</td>'
-      +'<td class="n '+(u>=0?'pos':'neg')+'">'+fv(u)+'</td><td class="n '+(p>=0?'pos':'neg')+'">'+p.toFixed(2)+'%</td>'
-      +'<td class="n">'+fv(avV[i])+'</td><td class="n">'+fv(avC[i])+'</td></tr>';
+    var u=V[i]-C[i],n=u-G[i],p=V[i]>0?(u/V[i]*100):0;
+    return '<tr><td class="mn">'+m+'</td><td class="n">'+fv(V[i])+'</td><td class="n">'+fv(C[i])+'</td><td class="n">'+fv(G[i])+'</td>'
+      +'<td class="n '+(u>=0?'pos':'neg')+'">'+fv(u)+'</td><td class="n '+(n>=0?'pos':'neg')+'">'+fv(n)+'</td><td class="n '+(p>=0?'pos':'neg')+'">'+p.toFixed(2)+'%</td></tr>';
   }).join('');
 
-  var Vj=JSON.stringify(V),Cj=JSON.stringify(C);
-  var avVj=JSON.stringify(avV),avCj=JSON.stringify(avC),utj=JSON.stringify(utils);
+  var Vj=JSON.stringify(V),Cj=JSON.stringify(C),Gj=JSON.stringify(G);
+  var avVj=JSON.stringify(avV),avCj=JSON.stringify(avC),avGj=JSON.stringify(avG),grossj=JSON.stringify(gross),netj=JSON.stringify(net);
   var mgF=mg.toFixed(1);
+  var mgNF=mgN.toFixed(1);
   var yrN=new Date().getFullYear();
 
   /* ---------- CSS del reporte ---------- */
@@ -2212,16 +2337,18 @@ function doPrint(){
     +'.st::after{content:"";flex:1;height:1px;background:#e5e7eb;}'
     +'.sd{width:7px;height:7px;border-radius:50%;flex-shrink:0;}'
     /* KPIs */
-    +'.kg{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:4px;}'
+    +'.kg{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:4px;}'
     +'.kk{border-radius:8px;padding:11px;position:relative;overflow:hidden;border:1px solid #e5e7eb;}'
     +'.kk::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}'
     +'.k1{background:#ecfdf5;}.k1::before{background:#10b981;}'
     +'.k2{background:#fffbeb;}.k2::before{background:#d97706;}'
-    +'.k3{background:#fefce8;}.k3::before{background:#eab308;}'
-    +'.k4{background:#eff6ff;}.k4::before{background:#3b82f6;}'
+    +'.k3{background:#eff6ff;}.k3::before{background:#2563eb;}'
+    +'.k4{background:#fefce8;}.k4::before{background:#eab308;}'
+    +'.k5{background:#f0fdfa;}.k5::before{background:#0f766e;}'
+    +'.k6{background:#eef2ff;}.k6::before{background:#3b82f6;}'
     +'.klab{font-size:8px;text-transform:uppercase;letter-spacing:1.2px;color:#64748b;margin-bottom:4px;font-weight:700;}'
     +'.kval{font-family:"Inter",Arial,sans-serif;font-size:17px;font-weight:800;line-height:1;margin-bottom:3px;letter-spacing:0;}'
-    +'.k1 .kval{color:#047857;}.k2 .kval{color:#b45309;}.k3 .kval{color:#a16207;}.k4 .kval{color:#1d4ed8;}'
+    +'.k1 .kval{color:#047857;}.k2 .kval{color:#b45309;}.k3 .kval{color:#1d4ed8;}.k4 .kval{color:#a16207;}.k5 .kval{color:#0f766e;}.k6 .kval{color:#1d4ed8;}'
     +'.kdet{font-size:8px;color:#64748b;}'
     /* chart grids */
     +'.g1{display:grid;grid-template-columns:1fr;gap:11px;margin-bottom:11px;}'
@@ -2271,8 +2398,8 @@ function doPrint(){
 
     /* ── Encabezado ── */
     +'<div class="rh"><div>'
-    +'<div class="ri"><div class="ric">&#128202;</div><div><div class="rt">AnualPrint</div><div class="rs">Sistema de Gesti&oacute;n Comercial</div></div></div>'
-    +'<div class="rn">Reporte Anual de Compras y Ventas</div>'
+    +'<div class="ri"><div class="ric">&#128202;</div><div><div class="rt">AnualPrint</div><div class="rs">Sistema de Gesti&oacute;n Financiera</div></div></div>'
+    +'<div class="rn">Reporte Anual de Ventas, Compras y Gastos</div>'
     +'<div style="margin-top:6px"><span class="rcur">Moneda: '+curName+'</span></div></div>'
     +'<div><div class="ry">'+year+'</div><div class="rm">Generado el '+dateStr+'</div><div class="rm" style="margin-top:2px">Documento Confidencial</div></div></div>'
 
@@ -2281,16 +2408,19 @@ function doPrint(){
     +'<div class="kg">'
     +'<div class="kk k1"><div class="klab">Total Ventas</div><div class="kval">'+s+' '+fk(tV)+'</div><div class="kdet">'+fv(tV)+'</div></div>'
     +'<div class="kk k2"><div class="klab">Total Compras</div><div class="kval">'+s+' '+fk(tC)+'</div><div class="kdet">'+fv(tC)+'</div></div>'
-    +'<div class="kk k3"><div class="klab">Utilidad Bruta</div><div class="kval">'+s+' '+fk(tU)+'</div><div class="kdet">'+fv(tU)+'</div></div>'
-    +'<div class="kk k4"><div class="klab">Margen</div><div class="kval">'+mgF+'%</div><div class="kdet">Utilidad / Ventas</div></div></div>'
+    +'<div class="kk k3"><div class="klab">Total Gastos</div><div class="kval">'+s+' '+fk(tG)+'</div><div class="kdet">'+fv(tG)+'</div></div>'
+    +'<div class="kk k4"><div class="klab">Utilidad Bruta</div><div class="kval">'+s+' '+fk(tU)+'</div><div class="kdet">Ventas - Compras</div></div>'
+    +'<div class="kk k5"><div class="klab">Utilidad Neta</div><div class="kval">'+s+' '+fk(tN)+'</div><div class="kdet">Ventas - Compras - Gastos</div></div>'
+    +'<div class="kk k6"><div class="klab">Margen Bruto</div><div class="kval">'+mgF+'%</div><div class="kdet">Margen neto: '+mgNF+'%</div></div></div>'
 
     /* ── PAGINA 1: Graficos comparativos ── */
-    +'<div class="st"><span class="sd" style="background:#334155"></span>Comparativo Mensual &mdash; Ventas vs Compras</div>'
-    +'<div class="g1"><div class="cb"><div class="cbt"><span class="cdot" style="background:#00e5a0"></span>Ventas vs Compras por Mes</div><div class="cw" style="height:180px"><canvas id="pBar"></canvas></div></div></div>'
+    +'<div class="st"><span class="sd" style="background:#334155"></span>Comparativo Mensual &mdash; Ventas, Compras y Gastos</div>'
+    +'<div class="g1"><div class="cb"><div class="cbt"><span class="cdot" style="background:#00e5a0"></span>Ventas, compras y gastos por mes</div><div class="cw" style="height:180px"><canvas id="pBar"></canvas></div></div></div>'
 
-    +'<div class="g2">'
+    +'<div class="g3">'
     +'<div class="cb"><div class="cbt"><span class="cdot" style="background:#00e5a0"></span>Tendencia de Ventas</div><div class="cw" style="height:140px"><canvas id="pLV"></canvas></div></div>'
     +'<div class="cb"><div class="cbt"><span class="cdot" style="background:#ff6b35"></span>Tendencia de Compras</div><div class="cw" style="height:140px"><canvas id="pLC"></canvas></div></div>'
+    +'<div class="cb"><div class="cbt"><span class="cdot" style="background:#2563eb"></span>Tendencia de Gastos</div><div class="cw" style="height:140px"><canvas id="pLG"></canvas></div></div>'
     +'</div>'
 
     /* ── PAGINA 2: Ventas en detalle ── */
@@ -2307,22 +2437,25 @@ function doPrint(){
 
     /* ── PAGINA 4: Utilidad y distribución ── */
     +'<div class="pb"></div>'
-    +'<div class="st" style="margin-top:0"><span class="sd" style="background:#b45309"></span>Utilidad y Distribuci&oacute;n</div>'
+    +'<div class="st" style="margin-top:0"><span class="sd" style="background:#2563eb"></span>An&aacute;lisis de Gastos</div>'
+    +'<div class="g1"><div class="cb"><div class="cbt"><span class="cdot" style="background:#2563eb"></span>Gastos Mensuales &mdash; Detalle por Mes</div><div class="cw" style="height:175px"><canvas id="pGO"></canvas></div></div></div>'
+    +'<div class="g1"><div class="cb"><div class="cbt"><span class="cdot" style="background:#1d4ed8"></span>Gastos acumulados a lo largo del a&ntilde;o</div><div class="cw" style="height:160px"><canvas id="pGA"></canvas></div></div></div>'
+    +'<div class="pb"></div>'
+    +'<div class="st" style="margin-top:0"><span class="sd" style="background:#0f766e"></span>Utilidad y Distribuci&oacute;n</div>'
     +'<div class="g2">'
-    +'<div class="cb"><div class="cbt"><span class="cdot" style="background:#f5c842"></span>Utilidad Bruta por Mes</div><div class="cw" style="height:175px"><canvas id="pUtil"></canvas></div></div>'
-    +'<div class="cb"><div class="cbt"><span class="cdot" style="background:#3b82f6"></span>Distribuci&oacute;n anual (Ventas / Compras / Utilidad)</div><div class="cw" style="height:175px"><canvas id="pDon"></canvas></div></div>'
+    +'<div class="cb"><div class="cbt"><span class="cdot" style="background:#f5c842"></span>Utilidad Bruta vs Utilidad Neta</div><div class="cw" style="height:175px"><canvas id="pUtil"></canvas></div></div>'
+    +'<div class="cb"><div class="cbt"><span class="cdot" style="background:#3b82f6"></span>Distribuci&oacute;n anual (Compras / Gastos / Utilidad Neta)</div><div class="cw" style="height:175px"><canvas id="pDon"></canvas></div></div>'
     +'</div>'
 
     /* ── Tabla de datos ── */
     +'<div class="st"><span class="sd" style="background:#334155"></span>Detalle Mensual de Operaciones</div>'
     +'<table class="dt"><thead><tr>'
-    +'<th>Mes</th><th class="n">Ventas ('+s+')</th><th class="n">Compras ('+s+')</th>'
-    +'<th class="n">Utilidad ('+s+')</th><th class="n">Margen %</th><th class="n">Vtas. Acum.</th><th class="n">Cpras. Acum.</th>'
+    +'<th>Mes</th><th class="n">Ventas ('+s+')</th><th class="n">Compras ('+s+')</th><th class="n">Gastos ('+s+')</th>'
+    +'<th class="n">Utilidad Bruta</th><th class="n">Utilidad Neta</th><th class="n">Margen Bruto %</th>'
     +'</tr></thead><tbody>'+rows+'</tbody>'
     +'<tfoot><tr><td>TOTALES &mdash; A&Ntilde;O '+year+'</td>'
-    +'<td class="n tv">'+fv(tV)+'</td><td class="n tc">'+fv(tC)+'</td>'
-    +'<td class="n tu">'+fv(tU)+'</td><td class="n tu">'+mg.toFixed(2)+'%</td>'
-    +'<td class="n tv">'+fv(tV)+'</td><td class="n tc">'+fv(tC)+'</td>'
+    +'<td class="n tv">'+fv(tV)+'</td><td class="n tc">'+fv(tC)+'</td><td class="n">'+fv(tG)+'</td>'
+    +'<td class="n tu">'+fv(tU)+'</td><td class="n tu">'+fv(tN)+'</td><td class="n tu">'+mg.toFixed(2)+'%</td>'
     +'</tr></tfoot></table>'
 
     /* ── Observaciones ── */
@@ -2343,9 +2476,9 @@ function doPrint(){
     +'<script>'
     +'var MO=["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];'
     +'var MOF=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];'
-    +'var V='+Vj+';var C='+Cj+';'
-    +'var avV='+avVj+';var avC='+avCj+';'
-    +'var utils='+utj+';'
+    +'var V='+Vj+';var C='+Cj+';var G='+Gj+';'
+    +'var avV='+avVj+';var avC='+avCj+';var avG='+avGj+';'
+    +'var gross='+grossj+';var net='+netj+';'
     +'var s="'+s+'";'
     +'function fv(x){var n=Number(x);if(!isFinite(n))n=0;return s+" "+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}'
     +'function fk(x){var n=Number(x);if(!isFinite(n))n=0;return n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}'
@@ -2357,7 +2490,8 @@ function doPrint(){
     +'new Chart(document.getElementById("pBar").getContext("2d"),{type:"bar",'
     +'data:{labels:MO,datasets:['
     +'{label:"Ventas",data:V,backgroundColor:"rgba(16,185,129,.78)",borderColor:"#10b981",borderWidth:1,borderRadius:4},'
-    +'{label:"Compras",data:C,backgroundColor:"rgba(217,119,6,.78)",borderColor:"#d97706",borderWidth:1,borderRadius:4}]},'
+    +'{label:"Compras",data:C,backgroundColor:"rgba(217,119,6,.78)",borderColor:"#d97706",borderWidth:1,borderRadius:4},'
+    +'{label:"Gastos",data:G,backgroundColor:"rgba(37,99,235,.76)",borderColor:"#2563eb",borderWidth:1,borderRadius:4}]},'
     +'options:{responsive:true,maintainAspectRatio:false,'
     +'plugins:{legend:{labels:{color:"#334155",font:{family:"Inter",size:10,weight:"600"}}},tooltip:TT},'
     +'scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
@@ -2373,6 +2507,13 @@ function doPrint(){
     +'var c=document.getElementById("pLC").getContext("2d");'
     +'var g=c.createLinearGradient(0,0,0,140);g.addColorStop(0,"rgba(217,119,6,.2)");g.addColorStop(1,"rgba(217,119,6,0)");'
     +'new Chart(c,{type:"line",data:{labels:MO,datasets:[{data:C,borderColor:"#d97706",backgroundColor:g,fill:true,tension:.4,pointBackgroundColor:"#d97706",pointRadius:3}]},'
+    +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
+    +'})();'
+    /* LINE G */
+    +'(function(){'
+    +'var c=document.getElementById("pLG").getContext("2d");'
+    +'var g=c.createLinearGradient(0,0,0,140);g.addColorStop(0,"rgba(37,99,235,.2)");g.addColorStop(1,"rgba(37,99,235,0)");'
+    +'new Chart(c,{type:"line",data:{labels:MO,datasets:[{data:G,borderColor:"#2563eb",backgroundColor:g,fill:true,tension:.4,pointBackgroundColor:"#2563eb",pointRadius:3}]},'
     +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
     +'})();'
     /* VENTAS BAR */
@@ -2403,30 +2544,48 @@ function doPrint(){
     +'new Chart(c,{type:"line",data:{labels:MO,datasets:[{data:avC,borderColor:"#d97706",backgroundColor:g,fill:true,tension:.3,pointBackgroundColor:"#d97706",pointRadius:3}]},'
     +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
     +'})();'
+    /* GASTOS BAR */
+    +'(function(){'
+    +'var maxG=Math.max.apply(null,G);var safeMaxG=maxG>0?maxG:1;'
+    +'new Chart(document.getElementById("pGO").getContext("2d"),{type:"bar",'
+    +'data:{labels:MO,datasets:[{data:G,backgroundColor:G.map(function(v){return "rgba(37,99,235,"+(.4+.5*v/safeMaxG).toFixed(2)+")";}),borderColor:"#2563eb",borderWidth:1,borderRadius:4}]},'
+    +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
+    +'})();'
+    /* GASTOS ACUM */
+    +'(function(){'
+    +'var c=document.getElementById("pGA").getContext("2d");'
+    +'var g=c.createLinearGradient(0,0,0,160);g.addColorStop(0,"rgba(37,99,235,.24)");g.addColorStop(1,"rgba(37,99,235,0)");'
+    +'new Chart(c,{type:"line",data:{labels:MO,datasets:[{data:avG,borderColor:"#2563eb",backgroundColor:g,fill:true,tension:.3,pointBackgroundColor:"#2563eb",pointRadius:3}]},'
+    +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
+    +'})();'
     /* UTILIDAD BAR */
     +'new Chart(document.getElementById("pUtil").getContext("2d"),{type:"bar",'
-    +'data:{labels:MO,datasets:[{data:utils,backgroundColor:utils.map(function(u){return u>=0?"rgba(234,179,8,.82)":"rgba(220,38,38,.82)";}),borderColor:utils.map(function(u){return u>=0?"#ca8a04":"#b91c1c";}),borderWidth:1,borderRadius:4}]},'
-    +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
+    +'data:{labels:MO,datasets:[{label:"Utilidad Bruta",data:gross,backgroundColor:"rgba(234,179,8,.82)",borderColor:"#ca8a04",borderWidth:1,borderRadius:4},{label:"Utilidad Neta",data:net,backgroundColor:"rgba(15,118,110,.78)",borderColor:"#0f766e",borderWidth:1,borderRadius:4}]},'
+    +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:"#334155",font:{family:"Inter",size:9,weight:"600"}}},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
     /* DONUT */
     +'(function(){'
-    +'var tV=V.reduce(function(a,b){return a+b;},0),tC=C.reduce(function(a,b){return a+b;},0),tU=tV-tC;'
+    +'var tV=V.reduce(function(a,b){return a+b;},0),tC=C.reduce(function(a,b){return a+b;},0),tG=G.reduce(function(a,b){return a+b;},0),tN=tV-tC-tG;'
     +'new Chart(document.getElementById("pDon").getContext("2d"),{type:"doughnut",'
-    +'data:{labels:["Ventas","Compras","Utilidad"],datasets:[{data:[tV,tC,Math.max(0,tU)],backgroundColor:["rgba(16,185,129,.88)","rgba(217,119,6,.88)","rgba(234,179,8,.88)"],borderColor:"#fff",borderWidth:2}]},'
+    +'data:{labels:["Compras","Gastos","Utilidad Neta"],datasets:[{data:[tC,tG,Math.max(0,tN)],backgroundColor:["rgba(217,119,6,.88)","rgba(37,99,235,.88)","rgba(15,118,110,.88)"],borderColor:"#fff",borderWidth:2}]},'
     +'options:{responsive:true,maintainAspectRatio:false,cutout:"60%",plugins:{legend:{position:"bottom",labels:{color:"#334155",font:{family:"Inter",size:9,weight:"600"},padding:8}},tooltip:TT}}});'
     +'})();'
     /* Observaciones */
     +'(function(){'
     +'var mxV=Math.max.apply(null,V),mnV=Math.min.apply(null,V);'
-    +'var bm=V.indexOf(mxV),wm=V.indexOf(mnV),mg2='+mgF+';'
-    +'var tV2=V.reduce(function(a,b){return a+b;},0),tC2=C.reduce(function(a,b){return a+b;},0),tU2=tV2-tC2;'
-    +'var negM=utils.filter(function(u){return u<0;}).length;'
+    +'var bm=V.indexOf(mxV),wm=V.indexOf(mnV),mg2='+mgF+',mgN2='+mgNF+';'
+    +'var tV2=V.reduce(function(a,b){return a+b;},0),tC2=C.reduce(function(a,b){return a+b;},0),tG2=G.reduce(function(a,b){return a+b;},0),tU2=tV2-tC2,tN2=tU2-tG2;'
+    +'var negM=net.filter(function(u){return u<0;}).length;'
     +'var obs=[];'
-    +'if(tV2===0&&tC2===0){obs.push("No se registraron operaciones para el periodo seleccionado.");document.getElementById("obsBox").innerHTML=obs.map(function(o){return\'<div class="oi"><span>\'+o+\'</span></div>\';}).join("");return;}'
+    +'if(tV2===0&&tC2===0&&tG2===0){obs.push("No se registraron operaciones para el periodo seleccionado.");document.getElementById("obsBox").innerHTML=obs.map(function(o){return\'<div class="oi"><span>\'+o+\'</span></div>\';}).join("");return;}'
     +'obs.push("Mes de mayor venta: <strong>"+MOF[bm]+"</strong> con "+fv(mxV)+".");'
     +'obs.push("Mes de menor venta: <strong>"+MOF[wm]+"</strong> con "+fv(mnV)+".");'
     +'obs.push("Margen bruto anual: <strong>"+mg2+"%</strong> &mdash; "+(mg2>30?"Rendimiento s&oacute;lido.":mg2>15?"Rendimiento moderado.":"Rendimiento bajo, revisar costos."));'
-    +'obs.push("Utilidad acumulada anual: <strong>"+fv(tU2)+"</strong>.");'
-    +'if(negM>0)obs.push("<strong>"+negM+" mes(es) con utilidad negativa</strong> &mdash; se recomienda an&aacute;lisis de costos.");'
+    +'obs.push("Utilidad bruta anual: <strong>"+fv(tU2)+"</strong>. Utilidad neta anual: <strong>"+fv(tN2)+"</strong>.");'
+    +'if(tN2<0)obs.push("La utilidad neta es negativa. Se recomienda revisar compras y gastos del periodo.");'
+    +'if(tU2>0&&tN2<0)obs.push("Las ventas cubren las compras, pero los gastos reducen el resultado final a p&eacute;rdida neta.");'
+    +'if(tV2>0&&tG2/tV2>.35)obs.push("Los gastos representan una proporci&oacute;n importante de las ventas. Se recomienda analizar gastos operativos.");'
+    +'if(tN2>0)obs.push("El resultado neto del periodo es positivo.");'
+    +'if(negM>0)obs.push("<strong>"+negM+" mes(es) con utilidad neta negativa</strong> &mdash; se recomienda an&aacute;lisis de costos y gastos.");'
     +'document.getElementById("obsBox").innerHTML=obs.map(function(o){return\'<div class="oi"><span>\'+o+\'</span></div>\';}).join("");'
     +'})();'
     +'<\/script></body></html>';
