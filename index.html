@@ -138,10 +138,29 @@ tbody td{padding:10px 12px;color:var(--text);}
 .loading-overlay{position:fixed;inset:0;background:rgba(15,23,42,.28);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
 .loading-overlay.active{display:flex;}
 .loading-box{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;box-shadow:0 24px 70px rgba(15,23,42,.24);padding:24px 28px;display:flex;align-items:center;gap:14px;color:var(--text);font-weight:800;}
-.toast-stack{position:fixed;right:18px;bottom:18px;display:grid;gap:10px;z-index:60;max-width:min(380px,calc(100vw - 36px));}
-.toast{background:var(--card-bg);border:1px solid var(--border);box-shadow:var(--card-shadow);border-left:4px solid var(--av);border-radius:10px;padding:12px 14px;color:var(--text);font-size:13px;animation:fu .24s ease both;}
-.toast.error{border-left-color:#dc2626;}
-.toast.ok{border-left-color:var(--av);}
+.toast-container{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:99999;display:flex;flex-direction:column;align-items:center;gap:10px;width:min(520px,calc(100vw - 32px));pointer-events:none;}
+.toast{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:flex-start;background:var(--card-bg);border:1px solid var(--border);box-shadow:0 18px 55px rgba(15,23,42,.18);border-radius:12px;padding:13px 14px;color:var(--text);font-size:13px;line-height:1.45;pointer-events:auto;opacity:0;transform:translateY(-10px) scale(.985);transition:opacity .26s ease,transform .26s ease,border-color .2s ease;}
+.toast.show{opacity:1;transform:translateY(0) scale(1);}
+.toast.hide{opacity:0;transform:translateY(-12px) scale(.985);}
+.toast-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;line-height:1;flex-shrink:0;}
+.toast-content{min-width:0;}
+.toast-title{font-size:12px;font-weight:800;color:var(--text);margin-bottom:2px;}
+.toast-message{font-size:13px;color:var(--text2);}
+.toast-close{width:28px;height:28px;border:1px solid var(--border);background:var(--surface);color:var(--text2);border-radius:8px;font-size:14px;font-weight:800;line-height:1;cursor:pointer;transition:background .18s,border-color .18s,color .18s,transform .18s;}
+.toast-close:hover{background:var(--surface2);border-color:var(--button-border);color:var(--text);transform:translateY(-1px);}
+.toast.success{border-color:rgba(16,185,129,.34);border-left:4px solid #059669;}
+.toast.success .toast-icon{background:rgba(16,185,129,.12);color:#047857;}
+.toast.error{border-color:rgba(220,38,38,.34);border-left:4px solid #dc2626;}
+.toast.error .toast-icon{background:rgba(220,38,38,.12);color:#b91c1c;}
+.toast.warning{border-color:rgba(217,119,6,.36);border-left:4px solid #d97706;}
+.toast.warning .toast-icon{background:rgba(217,119,6,.13);color:#92400e;}
+.toast.info{border-color:rgba(37,99,235,.26);border-left:4px solid #2563eb;}
+.toast.info .toast-icon{background:rgba(37,99,235,.11);color:#1d4ed8;}
+[data-theme="dark"] .toast{box-shadow:0 20px 60px rgba(0,0,0,.38);}
+[data-theme="dark"] .toast.success .toast-icon{color:#6ee7b7;}
+[data-theme="dark"] .toast.error .toast-icon{color:#fca5a5;}
+[data-theme="dark"] .toast.warning .toast-icon{color:#fbbf24;}
+[data-theme="dark"] .toast.info .toast-icon{color:#93c5fd;}
 .onboarding-overlay{position:fixed;inset:0;background:rgba(15,23,42,.48);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;z-index:70;padding:20px;}
 .onboarding-overlay.active{display:flex;}
 .onboarding-modal{width:min(560px,100%);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 26px 80px rgba(15,23,42,.28);padding:28px;color:var(--text);}
@@ -252,7 +271,7 @@ tbody td{color:var(--text);}
 .auth-theme{align-self:flex-start;}
 @media(max-width:1100px){.report-item{grid-template-columns:1fr 1fr;}.report-actions{justify-content:flex-start;grid-column:1/-1;}}
 @media(max-width:900px){.mgrid{grid-template-columns:1fr;}.fw{grid-column:1;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.auth-shell{grid-template-columns:1fr;max-width:560px;}.auth-side{min-height:auto;border-right:none;border-bottom:1px solid var(--border);}.auth-panel{min-height:auto;}}
-@media(max-width:600px){.wrap{padding:0 16px;}.kpi-grid{grid-template-columns:1fr;}.hi{flex-direction:column;align-items:flex-start;}.hctrl{width:100%;}.tabs{overflow-x:auto;}.tab{min-width:130px;}.ch{align-items:flex-start;gap:10px;flex-direction:column;}.auth-view{padding:16px 12px;align-items:flex-start;}.auth-side,.auth-panel{padding:24px;}.auth-hero h2{font-size:26px;}.auth-actions{grid-template-columns:1fr;}.report-item{grid-template-columns:1fr;}.user-panel{width:100%;justify-content:space-between;}.btn-action,.btn-print{width:100%;justify-content:center;}.onboarding-modal{padding:22px;}.onboarding-actions,.data-actions{display:grid;width:100%;}.data-actions .btn-action{width:100%;}.numora-launcher{right:14px;bottom:14px;padding:8px 11px;}.numora-launch-text span{display:none;}.numora-panel{right:10px;left:10px;bottom:74px;width:auto;height:calc(100vh - 92px);}.numora-msg{max-width:92%;}.numora-form{padding-bottom:calc(10px + env(safe-area-inset-bottom));}}
+@media(max-width:600px){.wrap{padding:0 16px;}.kpi-grid{grid-template-columns:1fr;}.hi{flex-direction:column;align-items:flex-start;}.hctrl{width:100%;}.tabs{overflow-x:auto;}.tab{min-width:130px;}.ch{align-items:flex-start;gap:10px;flex-direction:column;}.auth-view{padding:16px 12px;align-items:flex-start;}.auth-side,.auth-panel{padding:24px;}.auth-hero h2{font-size:26px;}.auth-actions{grid-template-columns:1fr;}.report-item{grid-template-columns:1fr;}.user-panel{width:100%;justify-content:space-between;}.btn-action,.btn-print{width:100%;justify-content:center;}.toast-container{top:12px;width:calc(100vw - 24px);}.toast{grid-template-columns:auto 1fr auto;gap:10px;padding:12px;}.toast-message{font-size:12px;}.onboarding-modal{padding:22px;}.onboarding-actions,.data-actions{display:grid;width:100%;}.data-actions .btn-action{width:100%;}.numora-launcher{right:14px;bottom:14px;padding:8px 11px;}.numora-launch-text span{display:none;}.numora-panel{right:10px;left:10px;bottom:74px;width:auto;height:calc(100vh - 92px);}.numora-msg{max-width:92%;}.numora-form{padding-bottom:calc(10px + env(safe-area-inset-bottom));}}
 @keyframes fu{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 @keyframes spin{to{transform:rotate(360deg);}}
 .kcard{animation:fu .4s ease both;}
@@ -561,7 +580,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
 <div class="loading-overlay" id="loadingOverlay" aria-live="polite" aria-hidden="true">
   <div class="loading-box"><div class="spinner"></div><span id="loadingText">Procesando...</span></div>
 </div>
-<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+<div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
 
 <div class="onboarding-overlay" id="onboardingOverlay" aria-hidden="true">
   <div class="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
@@ -1173,16 +1192,73 @@ function updateAuthConfigNote(){
     note.textContent='Configura SUPABASE_URL y SUPABASE_ANON_KEY en el script del archivo antes de publicar.';
   }
 }
-function showToast(message,type){
-  var stack=document.getElementById('toastStack');
-  if(!stack||!message)return;
+function showToast(message,type,options){
+  var container=document.getElementById('toastContainer');
+  if(!container||!message)return;
+  var normalized=(type||'info').toLowerCase();
+  if(normalized==='ok')normalized='success';
+  if(['success','error','warning','info'].indexOf(normalized)===-1)normalized='info';
+  var cfg={
+    success:{title:'Correcto',icon:'OK',duration:4000},
+    error:{title:'Error',icon:'!',duration:8000},
+    warning:{title:'Aviso',icon:'!',duration:6000},
+    info:{title:'Informaci\u00f3n',icon:'i',duration:4000}
+  }[normalized];
+  var opts=options||{};
+  var duration=Object.prototype.hasOwnProperty.call(opts,'duration')?Number(opts.duration):cfg.duration;
+  if(!isFinite(duration)||duration<0)duration=cfg.duration;
+
   var toast=document.createElement('div');
-  toast.className='toast '+(type||'');
-  toast.textContent=message;
-  stack.appendChild(toast);
-  setTimeout(function(){toast.style.opacity='0';toast.style.transform='translateY(8px)';},3600);
-  setTimeout(function(){if(toast.parentNode)toast.parentNode.removeChild(toast);},4200);
+  toast.className='toast '+normalized;
+  toast.setAttribute('role',normalized==='error'||normalized==='warning'?'alert':'status');
+
+  var icon=document.createElement('div');
+  icon.className='toast-icon';
+  icon.textContent=opts.icon||cfg.icon;
+
+  var content=document.createElement('div');
+  content.className='toast-content';
+  var titleText=Object.prototype.hasOwnProperty.call(opts,'title')?opts.title:cfg.title;
+  if(titleText){
+    var title=document.createElement('div');
+    title.className='toast-title';
+    title.textContent=titleText;
+    content.appendChild(title);
+  }
+  var body=document.createElement('div');
+  body.className='toast-message';
+  body.textContent=message;
+  content.appendChild(body);
+
+  var close=document.createElement('button');
+  close.type='button';
+  close.className='toast-close';
+  close.setAttribute('aria-label','Cerrar aviso');
+  close.textContent='x';
+
+  toast.appendChild(icon);
+  toast.appendChild(content);
+  toast.appendChild(close);
+  container.appendChild(toast);
+
+  var closeTimer=null;
+  function dismiss(){
+    if(toast.classList.contains('hide'))return;
+    toast.classList.remove('show');
+    toast.classList.add('hide');
+    setTimeout(function(){
+      if(toast.parentNode)toast.parentNode.removeChild(toast);
+    },280);
+  }
+  close.addEventListener('click',dismiss);
+  requestAnimationFrame(function(){toast.classList.add('show');});
+  if(duration!==0){
+    closeTimer=setTimeout(dismiss,duration);
+    toast.addEventListener('mouseenter',function(){if(closeTimer)clearTimeout(closeTimer);});
+    toast.addEventListener('mouseleave',function(){closeTimer=setTimeout(dismiss,1600);});
+  }
 }
+window.showToast=showToast;
 function showLoading(message){
   var overlay=document.getElementById('loadingOverlay');
   var text=document.getElementById('loadingText');
@@ -1407,6 +1483,7 @@ async function sendNumoraMessage(text){
     var fallbackMsg='No pude conectarme con el asistente en este momento. Inténtalo nuevamente en unos segundos.';
     if(err&&err.message==='Failed to fetch')fallbackMsg='Sin conexión. Verifica tu internet e inténtalo nuevamente.';
     addNumoraMessage('assistant',fallbackMsg);
+    showToast(fallbackMsg,'error');
   }finally{
     setNumoraBusy(false);
     /* Re-enfocar el input para facilitar escritura continua */
@@ -1954,12 +2031,12 @@ function doPrint(){
   try{
     printWindow=window.open('','_blank','width=1100,height=860');
     if(!printWindow){
-      showToast('El navegador bloque\u00f3 la previsualizaci\u00f3n. Permite ventanas emergentes para AnualPrint e int\u00e9ntalo nuevamente.','error');
+      showToast('No se pudo abrir la previsualizaci\u00f3n del reporte. Permite ventanas emergentes para AnualPrint e int\u00e9ntalo nuevamente.','warning',{duration:10000});
       return;
     }
   }catch(openErr){
     console.error('Error al abrir la previsualizaci\u00f3n de impresi\u00f3n:',openErr);
-    showToast('El navegador bloque\u00f3 la previsualizaci\u00f3n. Permite ventanas emergentes para AnualPrint e int\u00e9ntalo nuevamente.','error');
+    showToast('No se pudo abrir la previsualizaci\u00f3n del reporte. Permite ventanas emergentes para AnualPrint e int\u00e9ntalo nuevamente.','warning',{duration:10000});
     return;
   }
 
@@ -2249,7 +2326,7 @@ function doPrint(){
       printWindow.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Error - AnualPrint</title></head><body style="font-family:Arial,sans-serif;padding:24px;color:#111827"><h1>No se pudo generar el reporte</h1><p>Ocurri&oacute; un error al preparar la previsualizaci&oacute;n. Cierra esta ventana e int&eacute;ntalo nuevamente.</p></body></html>');
       printWindow.document.close();
     }catch(writeErr){}
-    showToast('No se pudo generar el reporte imprimible. Revisa la consola e int\u00e9ntalo nuevamente.','error');
+    showToast('No se pudo generar el reporte imprimible. Int\u00e9ntalo nuevamente.','error',{duration:10000});
   }
 }
 
