@@ -23,6 +23,13 @@ cleanDir(outDir);
   'service-worker.js'
 ].forEach((file) => copyFile(path.join(root, file), path.join(outDir, file)));
 
+fs.readdirSync(root)
+  .filter((file) => {
+    const lowerFile = file.toLowerCase();
+    return lowerFile.startsWith('google') && lowerFile.endsWith('.html');
+  })
+  .forEach((file) => copyFile(path.join(root, file), path.join(outDir, file)));
+
 if (fs.existsSync(path.join(root, 'icons'))) {
   fs.mkdirSync(iconOutDir, { recursive: true });
   fs.readdirSync(path.join(root, 'icons'))
