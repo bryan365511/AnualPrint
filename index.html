@@ -2,12 +2,19 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="description" content="AnualPrint: dashboard financiero anual de compras, ventas, utilidad bruta y margen para seguimiento gerencial.">
 <meta name="theme-color" content="#f8fafc">
 <meta name="author" content="AnualPrint">
 <meta name="robots" content="index,follow">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AnualPrint">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>AnualPrint | Dashboard Financiero</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -412,6 +419,42 @@ tbody tr:hover{background:var(--row-hover);}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid rgba(15,118,110,.36);outline-offset:2px;}
 @keyframes corpFade{from{opacity:0;}to{opacity:1;}}
 @keyframes corpModalIn{from{opacity:0;transform:translateY(12px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+@media(max-width:720px){
+  body{min-height:100svh;padding-bottom:env(safe-area-inset-bottom);}
+  .auth-view{min-height:100svh;padding:14px 12px calc(18px + env(safe-area-inset-bottom));align-items:center;}
+  .auth-shell{width:100%;border-radius:14px;overflow:hidden;}
+  .auth-side,.auth-panel{padding:22px 18px;}
+  .auth-copy{font-size:13px;}
+  .wrap{padding:0 14px;}
+  header{padding:18px 0 16px;margin-bottom:16px;}
+  .logo-area{width:100%;}
+  .logo-text h1{font-size:21px;}
+  .hctrl{display:grid;grid-template-columns:1fr;gap:9px;width:100%;}
+  .yr,.cur-toggle,.theme-toggle,.user-panel{width:100%;justify-content:space-between;}
+  .cur-toggle{display:grid;grid-template-columns:1fr 1fr;}
+  .cur-btn{text-align:center;}
+  .tabs{position:sticky;top:0;z-index:20;margin-left:-14px;margin-right:-14px;border-radius:0;border-left:0;border-right:0;overflow-x:auto;padding:6px 14px;scroll-snap-type:x proximity;}
+  .tab{flex:0 0 auto;min-width:132px;scroll-snap-align:start;}
+  .kpi-grid{gap:10px;margin-bottom:16px;}
+  .kcard,.ccard{padding:16px;border-radius:10px;}
+  .kval{font-size:22px;overflow-wrap:anywhere;}
+  .mgrid{gap:12px;}
+  .cw{height:225px;}.cwsm{height:205px;}
+  .twrap{margin-left:-8px;margin-right:-8px;padding:0 8px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  table{min-width:680px;}
+  thead th,tbody td{padding:10px 11px;}
+  .edt{width:138px;}
+  .data-intro{gap:12px;}
+  .data-actions{grid-template-columns:1fr;gap:8px;}
+  .report-actions{display:grid;grid-template-columns:1fr;gap:8px;}
+  .numora-launcher{right:14px;bottom:calc(14px + env(safe-area-inset-bottom));}
+  .numora-panel{left:8px;right:8px;bottom:calc(8px + env(safe-area-inset-bottom));width:auto;height:calc(100svh - 16px - env(safe-area-inset-bottom));max-height:none;border-radius:14px;}
+  .numora-body{padding:12px;}
+  .numora-suggestions{padding:9px 12px;}
+  .numora-form{padding:10px 12px calc(12px + env(safe-area-inset-bottom));}
+  .onboarding-overlay{padding:12px;}
+  .onboarding-modal{max-height:calc(100svh - 24px);overflow:auto;}
+}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important;}}
 </style>
 </head>
@@ -2330,8 +2373,22 @@ function doPrint(){
   }
 }
 
+function registerPWAServiceWorker(){
+  if(!('serviceWorker' in navigator))return;
+  var host=window.location.hostname;
+  var isLocal=host==='localhost'||host==='127.0.0.1'||host==='[::1]';
+  if(window.location.protocol!=='https:'&&!isLocal)return;
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('/service-worker.js',{scope:'/'})
+      .catch(function(err){
+        console.warn('No se pudo registrar el service worker de AnualPrint:',err);
+      });
+  });
+}
+
 /* INIT */
 window.doPrint=doPrint;
+registerPWAServiceWorker();
 initApp();
 </script>
 </body>
