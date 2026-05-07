@@ -288,6 +288,7 @@ html{transition:background-color .24s ease,color .24s ease;}
 body{background:var(--app-bg);letter-spacing:0;-webkit-font-smoothing:antialiased;}
 .wrap{max-width:1380px;}
 header{padding:24px 0 20px;margin-bottom:22px;border-bottom-color:var(--border);}
+header{position:relative;z-index:67;background:var(--app-bg);}
 .logo-icon{border-radius:9px;box-shadow:none;}
 .logo-text h1,.auth-brand h1{font-size:23px;font-weight:800;color:var(--text);}
 .logo-text span{letter-spacing:1.1px;color:var(--text3);}
@@ -641,7 +642,7 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid 
         </div>
         <button class="btn-action btn-save" id="saveReportBtn">Guardar reporte</button>
         <button class="btn-action btn-secondary" id="saveAsReportBtn">Guardar como nuevo</button>
-        <button class="btn-print" onclick="doPrint()">
+        <button class="btn-print" id="printReportBtn" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 6 2 18 2 18 9"/>
             <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
@@ -1440,6 +1441,10 @@ function bindAppEvents(){
   document.getElementById('signOutBtn').addEventListener('click',signOut);
   document.getElementById('saveReportBtn').addEventListener('click',function(){saveReport(false);});
   document.getElementById('saveAsReportBtn').addEventListener('click',function(){saveReport(true);});
+  document.getElementById('printReportBtn').addEventListener('click',function(e){
+    if(e&&e.preventDefault)e.preventDefault();
+    doPrint();
+  });
   document.getElementById('dataSaveBtn').addEventListener('click',function(){saveReport(false);});
   document.getElementById('clearYearBtn').addEventListener('click',clearYearData);
   document.getElementById('refreshReportsBtn').addEventListener('click',loadReports);
@@ -1945,6 +1950,20 @@ async function deleteReport(id){
    IMPRESION — TODOS LOS GRAFICOS
    ================================================================ */
 function doPrint(){
+  var printWindow=null;
+  try{
+    printWindow=window.open('','_blank','width=1100,height=860');
+    if(!printWindow){
+      showToast('El navegador bloque\u00f3 la previsualizaci\u00f3n. Permite ventanas emergentes para AnualPrint e int\u00e9ntalo nuevamente.','error');
+      return;
+    }
+  }catch(openErr){
+    console.error('Error al abrir la previsualizaci\u00f3n de impresi\u00f3n:',openErr);
+    showToast('El navegador bloque\u00f3 la previsualizaci\u00f3n. Permite ventanas emergentes para AnualPrint e int\u00e9ntalo nuevamente.','error');
+    return;
+  }
+
+  try{
   var year=getYear();
   var d=getYD(year);var V=d.ventas,C=d.compras;
   var s=cur==='PEN'?'S/':'$';
@@ -2220,12 +2239,22 @@ function doPrint(){
     +'})();'
     +'<\/script></body></html>';
 
-  var w=window.open('','_blank','width=1100,height=860');
-  w.document.write(html);
-  w.document.close();
+  printWindow.document.write(html);
+  printWindow.document.close();
+  try{printWindow.focus();}catch(focusErr){}
+  }catch(err){
+    console.error('Error al generar el reporte imprimible:',err);
+    try{
+      printWindow.document.open();
+      printWindow.document.write('<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Error - AnualPrint</title></head><body style="font-family:Arial,sans-serif;padding:24px;color:#111827"><h1>No se pudo generar el reporte</h1><p>Ocurri&oacute; un error al preparar la previsualizaci&oacute;n. Cierra esta ventana e int&eacute;ntalo nuevamente.</p></body></html>');
+      printWindow.document.close();
+    }catch(writeErr){}
+    showToast('No se pudo generar el reporte imprimible. Revisa la consola e int\u00e9ntalo nuevamente.','error');
+  }
 }
 
 /* INIT */
+window.doPrint=doPrint;
 initApp();
 </script>
 </body>
