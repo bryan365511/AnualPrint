@@ -86,7 +86,7 @@ tbody tr:hover{background:rgba(255,255,255,.025);}
 tbody td{padding:10px 12px;color:var(--text);}
 .mname{font-family:'Inter',Arial,sans-serif;font-weight:700;font-size:13px;}
 .vv{color:#6ee7b7;font-weight:600;}.vc{color:#fbbf24;font-weight:600;}.vu{color:#fde68a;font-weight:600;}.vneg{color:#fca5a5;font-weight:600;}
-.edt{background:rgba(15,23,42,.55);border:1px solid var(--border);border-radius:6px;color:inherit;font-family:'Inter',Arial,sans-serif;font-size:12px;width:118px;padding:5px 7px;text-align:right;outline:none;transition:border-color .2s,background .2s;}
+.edt{background:rgba(15,23,42,.55);border:1px solid var(--border);border-radius:6px;color:inherit;font-family:'Inter',Arial,sans-serif;font-size:12px;width:150px;max-width:100%;padding:6px 8px;text-align:right;outline:none;transition:border-color .2s,background .2s;}
 .edt:focus{border-color:var(--av);}.edtc:focus{border-color:var(--ac);}
 .trow td{background:#172033;font-weight:800;border-top:2px solid var(--border);font-family:'Inter',Arial,sans-serif;font-size:13px;}
 .hint{font-size:11px;color:var(--text3);margin-top:12px;display:flex;align-items:center;gap:6px;}
@@ -142,6 +142,63 @@ tbody td{padding:10px 12px;color:var(--text);}
 .toast{background:var(--card-bg);border:1px solid var(--border);box-shadow:var(--card-shadow);border-left:4px solid var(--av);border-radius:10px;padding:12px 14px;color:var(--text);font-size:13px;animation:fu .24s ease both;}
 .toast.error{border-left-color:#dc2626;}
 .toast.ok{border-left-color:var(--av);}
+.onboarding-overlay{position:fixed;inset:0;background:rgba(15,23,42,.48);backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;z-index:70;padding:20px;}
+.onboarding-overlay.active{display:flex;}
+.onboarding-modal{width:min(560px,100%);background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 26px 80px rgba(15,23,42,.28);padding:28px;color:var(--text);}
+.onboarding-step{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.2px;color:var(--av);margin-bottom:10px;}
+.onboarding-title{font-size:24px;font-weight:800;line-height:1.15;margin-bottom:10px;color:var(--text);}
+.onboarding-copy{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:22px;}
+.onboarding-progress{display:flex;gap:7px;margin-bottom:22px;}
+.onboarding-dot{height:5px;flex:1;border-radius:99px;background:var(--border);}
+.onboarding-dot.active{background:var(--av);}
+.onboarding-check{display:flex;align-items:center;gap:8px;color:var(--text2);font-size:12px;margin-bottom:18px;}
+.onboarding-check input{accent-color:var(--av);}
+.onboarding-actions{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+.data-intro{margin-bottom:16px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.data-title{font-size:16px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.data-copy{font-size:12px;color:var(--text2);max-width:680px;}
+.data-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.data-msg{font-size:12px;color:var(--av);font-weight:700;margin-top:12px;min-height:18px;}
+.money-input{font-variant-numeric:tabular-nums;}
+.numora-launcher{position:fixed;right:22px;bottom:22px;z-index:65;display:none;align-items:center;gap:10px;background:var(--button-bg);border:1px solid var(--button-border);color:var(--button-text);border-radius:999px;padding:10px 14px;box-shadow:0 18px 48px rgba(15,23,42,.22);font-family:'Inter',Arial,sans-serif;font-weight:800;cursor:pointer;}
+.numora-launcher.visible{display:flex;}
+.numora-icon{width:34px;height:34px;border-radius:50%;background:var(--av);color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.numora-launch-text{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;}
+.numora-launch-text strong{font-size:13px;}
+.numora-launch-text span{font-size:10px;color:var(--text2);font-weight:700;}
+.numora-panel{position:fixed;right:22px;bottom:84px;width:min(390px,calc(100vw - 28px));height:min(620px,calc(100vh - 120px));z-index:66;background:var(--card-bg);border:1px solid var(--border);border-radius:16px;box-shadow:0 26px 80px rgba(15,23,42,.28);display:none;flex-direction:column;overflow:hidden;}
+.numora-panel.open{display:flex;}
+.numora-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px;border-bottom:1px solid var(--border);background:var(--surface2);}
+.numora-brand{display:flex;align-items:center;gap:10px;}
+.numora-brand h3{font-size:15px;font-weight:800;color:var(--text);line-height:1;}
+.numora-brand span{font-size:11px;color:var(--text2);font-weight:700;}
+.numora-actions{display:flex;gap:6px;}
+.numora-mini{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:7px;padding:6px 8px;font-family:'Inter',Arial,sans-serif;font-size:11px;font-weight:800;cursor:pointer;}
+.numora-body{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px;}
+.numora-msg{max-width:86%;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.45;white-space:pre-wrap;}
+.numora-msg.assistant{align-self:flex-start;background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+.numora-msg.user{align-self:flex-end;background:var(--av);color:#fff;}
+.numora-thinking{font-size:12px;color:var(--text2);padding:8px 14px;border-top:1px solid var(--border);display:none;align-items:center;gap:8px;background:var(--surface2);}
+.numora-thinking.active{display:flex;}
+.numora-dots{display:flex;gap:4px;}.numora-dots span{width:6px;height:6px;border-radius:50%;background:var(--av);animation:ndot 1.2s infinite ease-in-out both;}
+.numora-dots span:nth-child(1){animation-delay:0s;}.numora-dots span:nth-child(2){animation-delay:.2s;}.numora-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes ndot{0%,80%,100%{transform:scale(.7);opacity:.5;}40%{transform:scale(1);opacity:1;}}
+.numora-suggestions{display:flex;gap:7px;overflow-x:auto;padding:10px 14px;border-top:1px solid var(--border);scrollbar-width:none;}
+.numora-suggestions::-webkit-scrollbar{display:none;}
+.numora-chip{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:7px 10px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer;font-family:'Inter',Arial,sans-serif;transition:background .15s,border-color .15s;}
+.numora-chip:hover:not(:disabled){background:var(--control-active);border-color:var(--av);}
+.numora-footer{border-top:1px solid var(--border);background:var(--surface2);}
+.numora-form{display:flex;gap:8px;padding:10px 14px 12px;}
+.numora-input{flex:1;min-width:0;border:1px solid var(--border);background:var(--input-bg);color:var(--text);border-radius:9px;padding:10px 11px;font-family:'Inter',Arial,sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+.numora-input:focus{border-color:var(--av);}
+.numora-send{border:none;background:var(--av);color:#fff;border-radius:9px;padding:0 15px;font-family:'Inter',Arial,sans-serif;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s,transform .1s;flex-shrink:0;}
+.numora-send:hover:not(:disabled){background:#059669;transform:scale(1.04);}
+.numora-send:disabled,.numora-chip:disabled{opacity:.52;cursor:not-allowed;}
+.numora-powered{text-align:center;font-size:10px;color:var(--text3);padding:0 14px 8px;letter-spacing:.3px;}
+.numora-msg{max-width:86%;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.5;white-space:pre-wrap;}
+.numora-msg.assistant{align-self:flex-start;background:var(--surface2);border:1px solid var(--border);color:var(--text);}
+.numora-msg.user{align-self:flex-end;background:var(--av);color:#fff;border-radius:12px 12px 3px 12px;}
+.numora-badge{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:rgba(16,185,129,.14);color:var(--av);margin-left:6px;vertical-align:middle;}
 .reports-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;}
 .reports-title{font-size:15px;font-weight:800;color:#f8fafc;}
 .reports-sub{font-size:12px;color:var(--text3);margin-top:2px;}
@@ -195,7 +252,7 @@ tbody td{color:var(--text);}
 .auth-theme{align-self:flex-start;}
 @media(max-width:1100px){.report-item{grid-template-columns:1fr 1fr;}.report-actions{justify-content:flex-start;grid-column:1/-1;}}
 @media(max-width:900px){.mgrid{grid-template-columns:1fr;}.fw{grid-column:1;}.kpi-grid{grid-template-columns:repeat(2,1fr);}.auth-shell{grid-template-columns:1fr;max-width:560px;}.auth-side{min-height:auto;border-right:none;border-bottom:1px solid var(--border);}.auth-panel{min-height:auto;}}
-@media(max-width:600px){.wrap{padding:0 16px;}.kpi-grid{grid-template-columns:1fr;}.hi{flex-direction:column;align-items:flex-start;}.hctrl{width:100%;}.tabs{overflow-x:auto;}.tab{min-width:130px;}.ch{align-items:flex-start;gap:10px;flex-direction:column;}.auth-view{padding:16px 12px;align-items:flex-start;}.auth-side,.auth-panel{padding:24px;}.auth-hero h2{font-size:26px;}.auth-actions{grid-template-columns:1fr;}.report-item{grid-template-columns:1fr;}.user-panel{width:100%;justify-content:space-between;}.btn-action,.btn-print{width:100%;justify-content:center;}}
+@media(max-width:600px){.wrap{padding:0 16px;}.kpi-grid{grid-template-columns:1fr;}.hi{flex-direction:column;align-items:flex-start;}.hctrl{width:100%;}.tabs{overflow-x:auto;}.tab{min-width:130px;}.ch{align-items:flex-start;gap:10px;flex-direction:column;}.auth-view{padding:16px 12px;align-items:flex-start;}.auth-side,.auth-panel{padding:24px;}.auth-hero h2{font-size:26px;}.auth-actions{grid-template-columns:1fr;}.report-item{grid-template-columns:1fr;}.user-panel{width:100%;justify-content:space-between;}.btn-action,.btn-print{width:100%;justify-content:center;}.onboarding-modal{padding:22px;}.onboarding-actions,.data-actions{display:grid;width:100%;}.data-actions .btn-action{width:100%;}.numora-launcher{right:14px;bottom:14px;padding:8px 11px;}.numora-launch-text span{display:none;}.numora-panel{right:10px;left:10px;bottom:74px;width:auto;height:calc(100vh - 92px);}.numora-msg{max-width:92%;}.numora-form{padding-bottom:calc(10px + env(safe-area-inset-bottom));}}
 @keyframes fu{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 @keyframes spin{to{transform:rotate(360deg);}}
 .kcard{animation:fu .4s ease both;}
@@ -372,6 +429,60 @@ tbody td{color:var(--text);}
 </div>
 <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
+<div class="onboarding-overlay" id="onboardingOverlay" aria-hidden="true">
+  <div class="onboarding-modal" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle">
+    <div class="onboarding-step" id="onboardingStep">Paso 1 de 4</div>
+    <div class="onboarding-progress" id="onboardingProgress"></div>
+    <div class="onboarding-title" id="onboardingTitle">Bienvenido a AnualPrint</div>
+    <div class="onboarding-copy" id="onboardingCopy">AnualPrint te permite registrar compras y ventas mensuales para generar reportes financieros anuales.</div>
+    <label class="onboarding-check"><input type="checkbox" id="onboardingSkip"> No volver a mostrar</label>
+    <div class="onboarding-actions">
+      <button class="auth-btn auth-ghost" id="onboardingBack">Atr&aacute;s</button>
+      <button class="auth-btn auth-primary" id="onboardingNext">Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<button class="numora-launcher" id="numoraLauncher" type="button" aria-label="Abrir chat de N&uacute;mora">
+  <span class="numora-icon">N</span>
+  <span class="numora-launch-text"><strong>N&uacute;mora</strong><span>&iquest;Necesitas ayuda?</span></span>
+</button>
+
+<section class="numora-panel" id="numoraPanel" aria-hidden="true" aria-label="Chat con N&uacute;mora">
+  <div class="numora-head">
+    <div class="numora-brand">
+      <span class="numora-icon">N</span>
+      <div><h3>N&uacute;mora</h3><span>Asistente financiero de AnualPrint</span></div>
+    </div>
+    <div class="numora-actions">
+      <button class="numora-mini" id="numoraClear" type="button">Limpiar</button>
+      <button class="numora-mini" id="numoraClose" type="button">&times; Cerrar</button>
+    </div>
+  </div>
+  <div class="numora-body" id="numoraMessages"></div>
+  <div class="numora-thinking" id="numoraThinking">
+    <div class="numora-dots"><span></span><span></span><span></span></div>
+    <span>N&uacute;mora est&aacute; analizando tu consulta...</span>
+  </div>
+  <div class="numora-suggestions" id="numoraSuggestions">
+    <button class="numora-chip" type="button">&iquest;Qu&eacute; hago primero?</button>
+    <button class="numora-chip" type="button">Gu&iacute;ame para registrar datos</button>
+    <button class="numora-chip" type="button">Expl&iacute;came mi dashboard</button>
+    <button class="numora-chip" type="button">&iquest;C&oacute;mo interpreto mi margen?</button>
+    <button class="numora-chip" type="button">&iquest;C&oacute;mo guardo un reporte?</button>
+    <button class="numora-chip" type="button">&iquest;C&oacute;mo genero un informe?</button>
+    <button class="numora-chip" type="button">Revisa mi avance anual</button>
+    <button class="numora-chip" type="button">&iquest;Qu&eacute; significa utilidad bruta?</button>
+  </div>
+  <div class="numora-footer">
+    <form class="numora-form" id="numoraForm">
+      <input class="numora-input" id="numoraInput" type="text" maxlength="800" autocomplete="off" placeholder="Escribe tu pregunta a N\u00famora...">
+      <button class="numora-send" id="numoraSend" type="submit">&#10148;</button>
+    </form>
+    <div class="numora-powered">Asesor interno de AnualPrint &bull; 2025</div>
+  </div>
+</section>
+
 <div class="wrap app-view" id="appView" hidden>
   <header>
     <div class="hi">
@@ -457,7 +568,17 @@ tbody td{color:var(--text);}
 
   <div id="tab-datos" style="display:none">
     <div class="ccard">
-      <div class="ch"><span class="ct">Registro de Datos Mensuales</span><span class="badge bm" id="curLabel">S/ Soles</span></div>
+      <div class="data-intro">
+        <div>
+          <div class="data-title">Registro Financiero Mensual</div>
+          <div class="data-copy">Ingrese las ventas y compras correspondientes a cada mes. El sistema calcular&aacute; autom&aacute;ticamente la utilidad y el margen.</div>
+        </div>
+        <div class="data-actions">
+          <button class="btn-action btn-secondary" id="clearYearBtn">Limpiar datos del a&ntilde;o</button>
+          <button class="btn-action btn-save" id="dataSaveBtn">Guardar cambios</button>
+          <span class="badge bm" id="curLabel">S/ Soles</span>
+        </div>
+      </div>
       <div class="twrap">
         <table>
           <thead><tr>
@@ -477,7 +598,8 @@ tbody td{color:var(--text);}
           </tr></tfoot>
         </table>
       </div>
-      <p class="hint">&#9999;&#65039; Haz clic en cualquier campo para editar. Solo se aceptan valores num&eacute;ricos con hasta 2 decimales.</p>
+      <div class="data-msg" id="dataMsg"></div>
+      <p class="hint">&#9999;&#65039; Haz clic en cualquier campo para editar. Puedes escribir 15000 o 1,250,000.50; al salir del campo se aplicar&aacute;n comas y 2 decimales.</p>
     </div>
   </div>
 
@@ -514,16 +636,20 @@ var dashboardInitialized = false;
 var authBusy = false;
 var emailCooldowns = {};
 var emailCooldownTimers = {};
+var onboardingStepIndex = 0;
+var onboardingSteps = [
+  {title:'Bienvenido a AnualPrint',copy:'AnualPrint permite registrar compras y ventas mensuales para generar reportes financieros anuales claros y listos para revisi\u00f3n gerencial.'},
+  {title:'Ingresa tus datos mensuales',copy:'Ve a Registro Financiero Mensual y coloca las ventas y compras de cada mes. Puedes editar los importes cuando lo necesites.'},
+  {title:'Revisa tus resultados',copy:'El dashboard calcula autom\u00e1ticamente ventas, compras, utilidad bruta y margen para que puedas evaluar el avance del periodo.'},
+  {title:'Guarda y genera reportes',copy:'Guarda tus reportes, c\u00e1rgalos luego desde Mis reportes y genera una versi\u00f3n imprimible o PDF para reuniones.'}
+];
+var numoraMessages = [];
+var numoraBusy = false;
+var numoraWelcome = 'Hola, soy Númora, tu asesor de AnualPrint. Puedo ayudarte a registrar tus datos, entender tus resultados, guardar reportes y generar informes financieros.\n\n¿Con qué te puedo ayudar hoy?';
 
 function getYD(year){
   if(!allData[year]){
-    var s=parseInt(year)*31,v=[],c=[];
-    for(var i=0;i<12;i++){
-      var b=8000+((s*(i+3))%22000);
-      v.push(parseFloat((b+500+(Math.sin(i*.9+s)*2000)).toFixed(2)));
-      c.push(parseFloat((b*.62+(Math.cos(i*.7+s)*800)).toFixed(2)));
-    }
-    allData[year]={ventas:v,compras:c};
+    allData[year]={ventas:Array(12).fill(0),compras:Array(12).fill(0)};
   }
   return allData[year];
 }
@@ -556,8 +682,20 @@ function ensureYearOption(year){
 }
 function getYear(){return document.getElementById('yearSelect').value;}
 function symStr(){return cur==='PEN'?'S/ ':'$ ';}
-function fmt(v){return symStr()+Number(v).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function fmtK(v){if(v>=1e6)return(v/1e6).toFixed(1)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return Number(v).toFixed(2);}
+function toMoneyNumber(v){var n=Number(v);return isFinite(n)?Math.round(n*100)/100:0;}
+function formatNumber(v){return toMoneyNumber(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function formatCurrency(v){return symStr()+formatNumber(v);}
+function fmt(v){return formatCurrency(v);}
+function fmtK(v){return formatNumber(v);}
+function parseMoney(value){
+  var text=String(value==null?'':value).replace(/,/g,'').replace(/[^\d.]/g,'');
+  var parts=text.split('.');
+  if(parts.length>2)text=parts.shift()+'.'+parts.join('');
+  var n=parseFloat(text);
+  if(!isFinite(n)||n<0)n=0;
+  return Math.round(n*100)/100;
+}
+function formatMoneyInput(value){return formatNumber(value);}
 
 var CH={};
 function kill(id){if(CH[id]){CH[id].destroy();delete CH[id];}}
@@ -606,7 +744,7 @@ function onThemeChange(e){
 }
 function mkTT(){
   return{backgroundColor:CHART_THEME.tooltipBg,titleColor:CHART_THEME.tooltipTitle,bodyColor:CHART_THEME.tooltipBody,borderColor:CHART_THEME.tooltipBorder,borderWidth:1,padding:10,cornerRadius:8,
-    callbacks:{label:function(ctx){return ' '+symStr()+Number(ctx.raw).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});}}};
+    callbacks:{label:function(ctx){return ' '+fmt(ctx.raw);}}};
 }
 var TX={color:'#cbd5e1',font:{family:'Inter',size:11,weight:'500'}};
 var GR='rgba(148,163,184,.14)';
@@ -617,6 +755,8 @@ function buildCharts(){
   var V=d.ventas,C=d.compras;
   var maxV=Math.max.apply(null,V);
   var maxC=Math.max.apply(null,C);
+  var safeMaxV=maxV>0?maxV:1;
+  var safeMaxC=maxC>0?maxC:1;
   refreshChartTheme();
 
   kill('bar');
@@ -651,12 +791,12 @@ function buildCharts(){
   var sorted=V.map(function(v,i){return{i:i,v:v};}).sort(function(a,b){return b.v-a.v;});
   document.getElementById('topList').innerHTML=sorted.slice(0,6).map(function(x){
     return '<div><div class="plab"><span class="pname">'+MOF[x.i]+'</span><span class="pval" style="color:#6ee7b7">'+fmt(x.v)+'</span></div>'
-      +'<div class="ptrack"><div class="pfill" style="width:'+(x.v/maxV*100).toFixed(1)+'%;background:linear-gradient(90deg,#10b981,#059669)"></div></div></div>';
+      +'<div class="ptrack"><div class="pfill" style="width:'+(x.v/safeMaxV*100).toFixed(1)+'%;background:linear-gradient(90deg,#10b981,#059669)"></div></div></div>';
   }).join('');
 
   kill('vo');
   CH.vo=new Chart(document.getElementById('cVO').getContext('2d'),{type:'bar',
-    data:{labels:MO,datasets:[{data:V,backgroundColor:V.map(function(v){return 'rgba(16,185,129,'+(.4+.5*v/maxV).toFixed(2)+')';}),borderColor:'#10b981',borderWidth:1,borderRadius:5}]},
+    data:{labels:MO,datasets:[{data:V,backgroundColor:V.map(function(v){return 'rgba(16,185,129,'+(.4+.5*v/safeMaxV).toFixed(2)+')';}),borderColor:'#10b981',borderWidth:1,borderRadius:5}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:TX},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'500'},callback:fmtK}}}}});
 
   var avV=[];V.reduce(function(a,v){var n=+(a+v).toFixed(2);avV.push(n);return n;},0);
@@ -668,7 +808,7 @@ function buildCharts(){
 
   kill('co');
   CH.co=new Chart(document.getElementById('cCO').getContext('2d'),{type:'bar',
-    data:{labels:MO,datasets:[{data:C,backgroundColor:C.map(function(v){return 'rgba(217,119,6,'+(.4+.5*v/maxC).toFixed(2)+')';}),borderColor:'#d97706',borderWidth:1,borderRadius:5}]},
+    data:{labels:MO,datasets:[{data:C,backgroundColor:C.map(function(v){return 'rgba(217,119,6,'+(.4+.5*v/safeMaxC).toFixed(2)+')';}),borderColor:'#d97706',borderWidth:1,borderRadius:5}]},
     options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:mkTT()},scales:{x:{grid:{color:GR},ticks:TX},y:{grid:{color:GR},ticks:{color:CHART_THEME.axis,font:{family:'Inter',size:11,weight:'500'},callback:fmtK}}}}});
 
   var avC=[];C.reduce(function(a,v){var n=+(a+v).toFixed(2);avC.push(n);return n;},0);
@@ -684,13 +824,12 @@ function buildCharts(){
 
 function updateKPI(){
   var d=getYD(getYear());var V=d.ventas,C=d.compras;
-  var s=cur==='PEN'?'S/':'$';
   var tV=V.reduce(function(a,b){return a+b;},0);
   var tC=C.reduce(function(a,b){return a+b;},0);
   var tU=tV-tC,mg=tV>0?(tU/tV*100):0;
-  document.getElementById('kV').textContent=s+' '+fmtK(tV);
-  document.getElementById('kC').textContent=s+' '+fmtK(tC);
-  document.getElementById('kU').textContent=s+' '+fmtK(tU);
+  document.getElementById('kV').textContent=fmt(tV);
+  document.getElementById('kC').textContent=fmt(tC);
+  document.getElementById('kU').textContent=fmt(tU);
   document.getElementById('kM').textContent=mg.toFixed(1)+'%';
   document.getElementById('kVs').textContent=fmt(tV)+' total';
   document.getElementById('kCs').textContent=fmt(tC)+' total';
@@ -711,15 +850,17 @@ function buildTable(){
     tV+=v;tC+=c;
     var tr=document.createElement('tr');
     tr.innerHTML='<td class="mname">'+m+'</td>'
-      +'<td style="text-align:right"><input class="edt vv" type="number" step="0.01" min="0" value="'+v.toFixed(2)+'" data-i="'+i+'" data-t="ventas"></td>'
-      +'<td style="text-align:right"><input class="edt edtc vc" type="number" step="0.01" min="0" value="'+c.toFixed(2)+'" data-i="'+i+'" data-t="compras"></td>'
+      +'<td style="text-align:right"><input class="edt money-input vv" type="text" inputmode="decimal" autocomplete="off" value="'+formatMoneyInput(v)+'" data-i="'+i+'" data-t="ventas" aria-label="Ventas de '+m+'"></td>'
+      +'<td style="text-align:right"><input class="edt money-input edtc vc" type="text" inputmode="decimal" autocomplete="off" value="'+formatMoneyInput(c)+'" data-i="'+i+'" data-t="compras" aria-label="Compras de '+m+'"></td>'
       +'<td style="text-align:right" class="'+(u>=0?'vu':'vneg')+'">'+fmt(u)+'</td>'
       +'<td style="text-align:right" class="'+(p>=0?'vu':'vneg')+'">'+p.toFixed(1)+'%</td>';
     tbody.appendChild(tr);
   });
   tbody.querySelectorAll('.edt').forEach(function(inp){
-    inp.addEventListener('change',onEdit);
-    inp.addEventListener('input',enfDec);
+    inp.addEventListener('focus',onMoneyFocus);
+    inp.addEventListener('input',sanitizeMoneyInput);
+    inp.addEventListener('blur',onEdit);
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();e.target.blur();}});
   });
   var tU=tV-tC,tP=tV>0?(tU/tV*100):0;
   document.getElementById('totV').textContent=fmt(tV);
@@ -730,13 +871,39 @@ function buildTable(){
   document.getElementById('totP').className=tP>=0?'vu':'vneg';
 }
 
-function enfDec(e){var p=e.target.value.split('.');if(p[1]&&p[1].length>2)e.target.value=parseFloat(e.target.value).toFixed(2);}
+function setDataMessage(msg){
+  var el=document.getElementById('dataMsg');
+  if(el)el.textContent=msg||'';
+}
+function onMoneyFocus(e){
+  var value=parseMoney(e.target.value);
+  e.target.value=value?String(value):'';
+  e.target.select();
+}
+function sanitizeMoneyInput(e){
+  var text=e.target.value.replace(/,/g,'').replace(/[^\d.]/g,'');
+  var parts=text.split('.');
+  if(parts.length>2)text=parts.shift()+'.'+parts.join('');
+  var dot=text.indexOf('.');
+  if(dot!==-1)text=text.slice(0,dot+1)+text.slice(dot+1).replace(/\./g,'').slice(0,2);
+  e.target.value=text;
+}
 function onEdit(e){
   var d=getYD(getYear());var i=parseInt(e.target.dataset.i);
-  var v=parseFloat(e.target.value);if(isNaN(v)||v<0)v=0;
-  v=Math.round(v*100)/100;e.target.value=v.toFixed(2);
+  var v=parseMoney(e.target.value);
+  e.target.value=formatMoneyInput(v);
   d[e.target.dataset.t][i]=v;
+  setDataMessage('C\u00e1lculos actualizados para '+MOF[i]+'.');
   buildCharts();buildTable();
+}
+function clearYearData(){
+  if(!confirm('\u00bfSeguro que deseas limpiar ventas y compras del a\u00f1o seleccionado?'))return;
+  allData[String(getYear())]={ventas:Array(12).fill(0),compras:Array(12).fill(0)};
+  setReportMessage();
+  buildCharts();
+  buildTable();
+  setDataMessage('Datos del a\u00f1o limpiados. Guarda el reporte si deseas conservar este cambio.');
+  showToast('Datos del a\u00f1o limpiados.','ok');
 }
 function setTab(t,btn){
   ['general','ventas','compras','datos','reportes'].forEach(function(x){document.getElementById('tab-'+x).style.display=x===t?'':'none';});
@@ -927,6 +1094,197 @@ function showDashboard(){
   hideLoading();
   window.scrollTo(0,0);
 }
+function getOnboardingKey(){
+  return currentUser&&currentUser.id?'anualprint_onboarding_seen_'+currentUser.id:'';
+}
+function hasSeenOnboarding(){
+  var key=getOnboardingKey();
+  if(!key)return true;
+  try{return localStorage.getItem(key)==='1';}catch(e){return false;}
+}
+function markOnboardingSeen(){
+  var key=getOnboardingKey();
+  if(!key)return;
+  try{localStorage.setItem(key,'1');}catch(e){}
+}
+function renderOnboarding(){
+  var step=onboardingSteps[onboardingStepIndex];
+  document.getElementById('onboardingStep').textContent='Paso '+(onboardingStepIndex+1)+' de '+onboardingSteps.length;
+  document.getElementById('onboardingTitle').textContent=step.title;
+  document.getElementById('onboardingCopy').textContent=step.copy;
+  document.getElementById('onboardingBack').disabled=onboardingStepIndex===0;
+  document.getElementById('onboardingNext').textContent=onboardingStepIndex===onboardingSteps.length-1?'Comenzar':'Siguiente';
+  document.getElementById('onboardingProgress').innerHTML=onboardingSteps.map(function(_,i){return '<span class="onboarding-dot '+(i<=onboardingStepIndex?'active':'')+'"></span>';}).join('');
+}
+function showOnboardingIfNeeded(){
+  if(hasSeenOnboarding())return;
+  onboardingStepIndex=0;
+  document.getElementById('onboardingSkip').checked=true;
+  renderOnboarding();
+  var overlay=document.getElementById('onboardingOverlay');
+  overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden','false');
+}
+function closeOnboarding(forceSave){
+  if(forceSave||document.getElementById('onboardingSkip').checked)markOnboardingSeen();
+  var overlay=document.getElementById('onboardingOverlay');
+  overlay.classList.remove('active');
+  overlay.setAttribute('aria-hidden','true');
+}
+function getNumoraStorageKey(){
+  return currentUser&&currentUser.id?'anualprint_numora_chat_'+currentUser.id:'';
+}
+function loadNumoraHistory(){
+  var key=getNumoraStorageKey();
+  numoraMessages=[];
+  if(key){
+    try{
+      var saved=JSON.parse(localStorage.getItem(key)||'[]');
+      if(Array.isArray(saved))numoraMessages=saved.filter(function(m){return m&&m.role&&m.content;}).slice(-20);
+    }catch(e){numoraMessages=[];}
+  }
+  if(!numoraMessages.length)numoraMessages=[{role:'assistant',content:numoraWelcome}];
+  renderNumoraMessages();
+}
+function saveNumoraHistory(){
+  var key=getNumoraStorageKey();
+  if(!key)return;
+  try{localStorage.setItem(key,JSON.stringify(numoraMessages.slice(-20)));}catch(e){}
+}
+function renderNumoraMessages(){
+  var box=document.getElementById('numoraMessages');
+  if(!box)return;
+  box.innerHTML='';
+  numoraMessages.forEach(function(msg){
+    var el=document.createElement('div');
+    el.className='numora-msg '+(msg.role==='user'?'user':'assistant');
+    /* Renderizado básico: negritas **texto** y listas con • */
+    var html=String(msg.content||'')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\n/g,'<br>');
+    el.innerHTML=html;
+    box.appendChild(el);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+function addNumoraMessage(role,content){
+  numoraMessages.push({role:role,content:String(content||'').slice(0,1600)});
+  numoraMessages=numoraMessages.slice(-20);
+  saveNumoraHistory();
+  renderNumoraMessages();
+}
+function setNumoraVisible(isVisible){
+  var launcher=document.getElementById('numoraLauncher');
+  var panel=document.getElementById('numoraPanel');
+  if(!launcher||!panel)return;
+  launcher.classList.toggle('visible',!!isVisible);
+  if(!isVisible){
+    panel.classList.remove('open');
+    panel.setAttribute('aria-hidden','true');
+  }
+}
+function openNumora(){
+  if(!currentUser){showToast('Para usar Númora, inicia sesión.','error');return;}
+  var panel=document.getElementById('numoraPanel');
+  if(!panel)return;
+  panel.classList.add('open');
+  panel.setAttribute('aria-hidden','false');
+  renderNumoraMessages();
+  setTimeout(function(){
+    var input=document.getElementById('numoraInput');
+    if(input)input.focus();
+    var box=document.getElementById('numoraMessages');
+    if(box)box.scrollTop=box.scrollHeight;
+  },60);
+}
+function closeNumora(){
+  document.getElementById('numoraPanel').classList.remove('open');
+  document.getElementById('numoraPanel').setAttribute('aria-hidden','true');
+}
+function setNumoraBusy(isBusy){
+  numoraBusy=isBusy;
+  var sendBtn=document.getElementById('numoraSend');
+  var input=document.getElementById('numoraInput');
+  var thinking=document.getElementById('numoraThinking');
+  if(sendBtn)sendBtn.disabled=isBusy;
+  if(input)input.disabled=isBusy;
+  if(thinking)thinking.classList.toggle('active',isBusy);
+  document.querySelectorAll('.numora-chip').forEach(function(btn){btn.disabled=isBusy;});
+  /* Auto-scroll al final cuando empieza a pensar */
+  if(isBusy){var box=document.getElementById('numoraMessages');if(box)box.scrollTop=box.scrollHeight;}
+}
+function getNumoraContext(){
+  var d=getYD(getYear());
+  var V=d.ventas.map(function(v){return toMoneyNumber(v);});
+  var C=d.compras.map(function(v){return toMoneyNumber(v);});
+  var tV=V.reduce(function(a,b){return a+b;},0);
+  var tC=C.reduce(function(a,b){return a+b;},0);
+  var tU=tV-tC;
+  var margin=tV>0?+(tU/tV*100).toFixed(2):0;
+  return {
+    year:parseInt(getYear(),10),
+    currency:cur,
+    ventas:V,
+    compras:C,
+    totalVentas:toMoneyNumber(tV),
+    totalCompras:toMoneyNumber(tC),
+    utilidadBruta:toMoneyNumber(tU),
+    margen:margin,
+    hasLoadedReport:!!currentReportId,
+    reportTitle:currentReportTitle||''
+  };
+}
+async function sendNumoraMessage(text){
+  if(numoraBusy)return;
+  var message=String(text||document.getElementById('numoraInput').value||'').trim();
+  if(!message)return;
+  if(message.length>800){showToast('Tu mensaje debe tener 800 caracteres como máximo.','error');return;}
+  if(!supabaseClient||!currentUser){showToast('Para usar Númora, inicia sesión.','error');return;}
+  document.getElementById('numoraInput').value='';
+  addNumoraMessage('user',message);
+  setNumoraBusy(true);
+  try{
+    /* Obtenemos el token para autenticar la solicitud si está disponible */
+    var token='';
+    try{
+      var sessionRes=await supabaseClient.auth.getSession();
+      token=sessionRes&&sessionRes.data&&sessionRes.data.session?sessionRes.data.session.access_token:'';
+    }catch(e){}
+    var headers={'Content-Type':'application/json'};
+    if(token)headers['Authorization']='Bearer '+token;
+    var res=await fetch('/api/numora',{
+      method:'POST',
+      headers:headers,
+      body:JSON.stringify({
+        message:message,
+        context:getNumoraContext(),
+        history:numoraMessages.slice(-11,-1).map(function(m){return{role:m.role,content:m.content};})
+      })
+    });
+    var data={};
+    try{data=await res.json();}catch(e){}
+    if(!res.ok||!data.reply){
+      var errMsg=data.error||'numora-error';
+      throw new Error(errMsg);
+    }
+    addNumoraMessage('assistant',data.reply);
+  }catch(err){
+    var fallbackMsg='No pude conectarme con el asistente en este momento. Inténtalo nuevamente en unos segundos.';
+    if(err&&err.message==='Failed to fetch')fallbackMsg='Sin conexión. Verifica tu internet e inténtalo nuevamente.';
+    addNumoraMessage('assistant',fallbackMsg);
+  }finally{
+    setNumoraBusy(false);
+    /* Re-enfocar el input para facilitar escritura continua */
+    try{document.getElementById('numoraInput').focus();}catch(e){}
+  }
+}
+function clearNumoraChat(){
+  if(!confirm('\u00bfSeguro que deseas limpiar el chat con N\u00famora?'))return;
+  numoraMessages=[{role:'assistant',content:numoraWelcome}];
+  saveNumoraHistory();
+  renderNumoraMessages();
+}
 function bindAppEvents(){
   function on(id,event,fn){var el=document.getElementById(id);if(el)el.addEventListener(event,fn);}
   on('goLoginBtn','click',function(){showAuthView('login');});
@@ -949,6 +1307,8 @@ function bindAppEvents(){
   document.getElementById('signOutBtn').addEventListener('click',signOut);
   document.getElementById('saveReportBtn').addEventListener('click',function(){saveReport(false);});
   document.getElementById('saveAsReportBtn').addEventListener('click',function(){saveReport(true);});
+  document.getElementById('dataSaveBtn').addEventListener('click',function(){saveReport(false);});
+  document.getElementById('clearYearBtn').addEventListener('click',clearYearData);
   document.getElementById('refreshReportsBtn').addEventListener('click',loadReports);
   document.getElementById('themeSelect').addEventListener('change',onThemeChange);
   document.getElementById('authThemeSelect').addEventListener('change',onThemeChange);
@@ -971,6 +1331,28 @@ function bindAppEvents(){
   document.getElementById('resetEmail').addEventListener('keydown',function(e){if(e.key==='Enter')sendPasswordReset();});
   ['newPassword','newPasswordConfirm'].forEach(function(id){
     document.getElementById(id).addEventListener('keydown',function(e){if(e.key==='Enter')updateRecoveredPassword();});
+  });
+  document.getElementById('onboardingBack').addEventListener('click',function(){
+    if(onboardingStepIndex>0){onboardingStepIndex--;renderOnboarding();}
+  });
+  document.getElementById('onboardingNext').addEventListener('click',function(){
+    if(onboardingStepIndex<onboardingSteps.length-1){onboardingStepIndex++;renderOnboarding();return;}
+    closeOnboarding(false);
+  });
+  document.getElementById('numoraLauncher').addEventListener('click',openNumora);
+  document.getElementById('numoraClose').addEventListener('click',closeNumora);
+  document.getElementById('numoraClear').addEventListener('click',clearNumoraChat);
+  document.getElementById('numoraForm').addEventListener('submit',function(e){e.preventDefault();sendNumoraMessage();});
+  document.getElementById('numoraSuggestions').addEventListener('click',function(e){
+    var btn=e.target.closest('.numora-chip');
+    if(btn&&!btn.disabled)sendNumoraMessage(btn.textContent.trim());
+  });
+  /* Cerrar panel con Escape */
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'){
+      var panel=document.getElementById('numoraPanel');
+      if(panel&&panel.classList.contains('open'))closeNumora();
+    }
   });
 }
 async function initApp(){
@@ -1028,11 +1410,14 @@ function handleSession(session){
   if(!currentUser){
     currentReportId=null;
     currentReportTitle='';
+    setNumoraVisible(false);
     showAuthView('welcome');
     return;
   }
   showDashboard();
   document.getElementById('userEmail').textContent=currentUser.email||'Usuario activo';
+  loadNumoraHistory();
+  setNumoraVisible(true);
   setAuthLoading('',false);
   setReportMessage();
   if(!dashboardInitialized){
@@ -1041,6 +1426,7 @@ function handleSession(session){
     dashboardInitialized=true;
   }
   loadReports();
+  showOnboardingIfNeeded();
 }
 function getAuthCredentials(mode){
   if(mode==='register'){
@@ -1259,6 +1645,8 @@ async function updateRecoveredPassword(){
     showToast('Contrase\u00f1a actualizada correctamente.','ok');
     showDashboard();
     document.getElementById('userEmail').textContent=currentUser&&currentUser.email?currentUser.email:'Usuario activo';
+    loadNumoraHistory();
+    setNumoraVisible(true);
     setReportMessage();
     if(!dashboardInitialized){
       populateYearSelect();
@@ -1266,6 +1654,7 @@ async function updateRecoveredPassword(){
       dashboardInitialized=true;
     }
     loadReports();
+    showOnboardingIfNeeded();
   }catch(err){
     setAuthMessage('Error de Supabase: '+(err.message||'No se pudo actualizar la contrase\u00f1a.'),'error');
   }finally{
@@ -1281,6 +1670,7 @@ async function signOut(){
   currentUser=null;
   currentReportId=null;
   currentReportTitle='';
+  setNumoraVisible(false);
   hideLoading();
   showAuthView('welcome');
   setAuthMessage('Sesi\u00f3n cerrada.','ok');
@@ -1293,8 +1683,8 @@ function getCurrentReportData(title){
     title:title,
     year:parseInt(getYear(),10),
     currency:cur,
-    ventas:d.ventas.map(function(v){return Number(v);}),
-    compras:d.compras.map(function(v){return Number(v);})
+    ventas:d.ventas.map(function(v){return toMoneyNumber(v);}),
+    compras:d.compras.map(function(v){return toMoneyNumber(v);})
   };
 }
 async function saveReport(asNew){
@@ -1368,7 +1758,7 @@ async function loadReport(id){
   document.getElementById('yearSelect').value=String(r.year);
   cur=r.currency==='USD'?'USD':'PEN';
   document.querySelectorAll('.cur-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-cur')===cur);});
-  allData[String(r.year)]={ventas:r.ventas.map(function(v){return Number(v);}),compras:r.compras.map(function(v){return Number(v);})};
+  allData[String(r.year)]={ventas:r.ventas.map(function(v){return toMoneyNumber(v);}),compras:r.compras.map(function(v){return toMoneyNumber(v);})};
   currentReportId=r.id;
   currentReportTitle=r.title;
   setReportMessage();
@@ -1435,8 +1825,8 @@ function doPrint(){
   var utils=V.map(function(v,i){return +(v-C[i]).toFixed(2);});
   var now=new Date();
   var dateStr=now.toLocaleDateString('es-PE',{day:'2-digit',month:'long',year:'numeric'});
-  function fv(x){return s+' '+Number(x).toLocaleString('es-PE',{minimumFractionDigits:2,maximumFractionDigits:2});}
-  function fk(x){if(x>=1e6)return(x/1e6).toFixed(1)+'M';if(x>=1e3)return(x/1e3).toFixed(1)+'K';return Number(x).toFixed(0);}
+  function fv(x){var n=Number(x);if(!isFinite(n))n=0;return s+' '+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function fk(x){var n=Number(x);if(!isFinite(n))n=0;return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
   var rows=MOF.map(function(m,i){
     var u=V[i]-C[i],p=V[i]>0?(u/V[i]*100):0;
@@ -1613,8 +2003,8 @@ function doPrint(){
     +'var avV='+avVj+';var avC='+avCj+';'
     +'var utils='+utj+';'
     +'var s="'+s+'";'
-    +'function fv(x){return s+" "+Number(x).toLocaleString("es-PE",{minimumFractionDigits:2,maximumFractionDigits:2});}'
-    +'function fk(x){if(x>=1e6)return(x/1e6).toFixed(1)+"M";if(x>=1e3)return(x/1e3).toFixed(1)+"K";return Number(x).toFixed(0);}'
+    +'function fv(x){var n=Number(x);if(!isFinite(n))n=0;return s+" "+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}'
+    +'function fk(x){var n=Number(x);if(!isFinite(n))n=0;return n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});}'
     +'var GR="#e5e7eb";'
     +'var TK={color:"#64748b",font:{family:"Inter",size:9,weight:"500"}};'
     +'var TT={backgroundColor:"#111827",titleColor:"#f8fafc",bodyColor:"#cbd5e1",borderColor:"#334155",borderWidth:1,padding:8,cornerRadius:6,'
@@ -1643,9 +2033,9 @@ function doPrint(){
     +'})();'
     /* VENTAS BAR */
     +'(function(){'
-    +'var maxV=Math.max.apply(null,V);'
+    +'var maxV=Math.max.apply(null,V);var safeMaxV=maxV>0?maxV:1;'
     +'new Chart(document.getElementById("pVO").getContext("2d"),{type:"bar",'
-    +'data:{labels:MO,datasets:[{data:V,backgroundColor:V.map(function(v){return "rgba(16,185,129,"+(.4+.5*v/maxV).toFixed(2)+")";}),borderColor:"#10b981",borderWidth:1,borderRadius:4}]},'
+    +'data:{labels:MO,datasets:[{data:V,backgroundColor:V.map(function(v){return "rgba(16,185,129,"+(.4+.5*v/safeMaxV).toFixed(2)+")";}),borderColor:"#10b981",borderWidth:1,borderRadius:4}]},'
     +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
     +'})();'
     /* VENTAS ACUM */
@@ -1657,9 +2047,9 @@ function doPrint(){
     +'})();'
     /* COMPRAS BAR */
     +'(function(){'
-    +'var maxC=Math.max.apply(null,C);'
+    +'var maxC=Math.max.apply(null,C);var safeMaxC=maxC>0?maxC:1;'
     +'new Chart(document.getElementById("pCO").getContext("2d"),{type:"bar",'
-    +'data:{labels:MO,datasets:[{data:C,backgroundColor:C.map(function(v){return "rgba(217,119,6,"+(.4+.5*v/maxC).toFixed(2)+")";}),borderColor:"#d97706",borderWidth:1,borderRadius:4}]},'
+    +'data:{labels:MO,datasets:[{data:C,backgroundColor:C.map(function(v){return "rgba(217,119,6,"+(.4+.5*v/safeMaxC).toFixed(2)+")";}),borderColor:"#d97706",borderWidth:1,borderRadius:4}]},'
     +'options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:TT},scales:{x:{grid:{color:GR},ticks:TK},y:{grid:{color:GR},ticks:{color:"#64748b",font:{family:"Inter",size:9,weight:"500"},callback:fk}}}}});'
     +'})();'
     /* COMPRAS ACUM */
@@ -1687,6 +2077,7 @@ function doPrint(){
     +'var tV2=V.reduce(function(a,b){return a+b;},0),tC2=C.reduce(function(a,b){return a+b;},0),tU2=tV2-tC2;'
     +'var negM=utils.filter(function(u){return u<0;}).length;'
     +'var obs=[];'
+    +'if(tV2===0&&tC2===0){obs.push("No se registraron operaciones para el periodo seleccionado.");document.getElementById("obsBox").innerHTML=obs.map(function(o){return\'<div class="oi"><span>\'+o+\'</span></div>\';}).join("");return;}'
     +'obs.push("Mes de mayor venta: <strong>"+MOF[bm]+"</strong> con "+fv(mxV)+".");'
     +'obs.push("Mes de menor venta: <strong>"+MOF[wm]+"</strong> con "+fv(mnV)+".");'
     +'obs.push("Margen bruto anual: <strong>"+mg2+"%</strong> &mdash; "+(mg2>30?"Rendimiento s&oacute;lido.":mg2>15?"Rendimiento moderado.":"Rendimiento bajo, revisar costos."));'
