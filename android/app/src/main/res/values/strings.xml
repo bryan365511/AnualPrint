@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AnualPrint</string>
+    <string name="title_activity_main">AnualPrint</string>
+    <string name="package_name">com.anualprint.app</string>
+    <string name="custom_url_scheme">com.anualprint.app</string>
+</resources>
